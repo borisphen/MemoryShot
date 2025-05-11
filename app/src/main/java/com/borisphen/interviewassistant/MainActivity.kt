@@ -1,10 +1,13 @@
 package com.borisphen.interviewassistant
 
-import android.content.Intent
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,38 +20,71 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.borisphen.presentation.ForegroundInterviewService
 import com.borisphen.presentation.InterviewViewModel
 import com.borisphen.presentation.di.InterviewComponent
+import com.borisphen.presentation.ui.RootContent
 import kotlinx.coroutines.flow.collectLatest
 
 class MainActivity : ComponentActivity() {
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+//                startInterviewService()
+            } else {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_LONG).show()
+            }
+        }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ContextCompat.startForegroundService(
-            this,
-            Intent(this, ForegroundInterviewService::class.java)
-        )
+        val dependencies = InterviewApplication.appComponent
+        val component: InterviewComponent = InterviewComponent.factory().create(dependencies)
 
         setContent {
-            InterviewApp()
+//            InterviewApp()
+            RootContent(component)
+        }
+
+        checkAndRequestPermission()
+    }
+
+    private fun checkAndRequestPermission() {
+        val permission = Manifest.permission.RECORD_AUDIO
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+//                startInterviewService()
+            }
+
+            shouldShowRequestPermissionRationale(permission) -> {
+                // Здесь можно показать объяснение (optional)
+                requestPermissionLauncher.launch(permission)
+            }
+
+            else -> {
+                requestPermissionLauncher.launch(permission)
+            }
         }
     }
 }
 
-// InterviewApp.kt
+// RootContent.kt
 @Composable
 fun InterviewApp() {
 
-    val component: InterviewComponent = remember { InterviewComponent.factory().create(InterviewApplication.appComponent) }
+    val dependencies = InterviewApplication.appComponent
+    val component: InterviewComponent =
+        remember { InterviewComponent.factory().create(dependencies) }
 
-    val context = LocalContext.current
-
-    val viewModel: InterviewViewModel = remember { component.viewModelFactory.create(component.useCase) }
+    val viewModel: InterviewViewModel =
+        remember { component.viewModelFactory.create(dependencies.useCase) }
 
     LaunchedEffect(Unit) {
         viewModel.answerFlow.collectLatest { answer ->

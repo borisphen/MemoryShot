@@ -1,5 +1,6 @@
 [versions]
 agp = "8.10.0"
+vosk = "0.3.32"
 dagger = "2.50"
 kotlin = "2.0.21"
 coreKtx = "1.10.1"
@@ -17,8 +18,10 @@ jetbrainsKotlinJvm = "2.0.21"
 material3 = "1.1.2"
 ui = "1.5.0"
 uiToolingPreview = "1.5.0"
+lifecycle_version = "2.9.0"
 
 [libraries]
+vosk = { module = "org.vosk:android", version.ref = "vosk" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
@@ -39,6 +42,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+lifecycle-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle_version" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

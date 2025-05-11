@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
 }
 
@@ -28,14 +29,33 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        compose = true
+    }
     kotlinOptions {
         jvmTarget = "11"
+    }
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt"
+            )
+        }
+    }
+    aaptOptions {
+        noCompress += listOf("model", "txt", "json", "bin")
     }
 }
 
 dependencies {
 
     implementation(project(":domain"))
+
+//    implementation(libs.vosk)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

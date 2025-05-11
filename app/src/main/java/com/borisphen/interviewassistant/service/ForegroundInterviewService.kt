@@ -1,4 +1,4 @@
-package com.borisphen.presentation
+package com.borisphen.interviewassistant.service
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -13,27 +13,27 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Log
+import com.borisphen.interviewassistant.InterviewApplication
 import com.borisphen.interviewassistant.domain.ProcessInterviewUseCase
-import com.borisphen.presentation.di.InterviewComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class ForegroundInterviewService : Service() {
 
-    @Inject
     lateinit var useCase: ProcessInterviewUseCase
 
-    private val serviceJob = Job()
-    private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
+    private val mainJob = SupervisorJob()
+    private val ioJob = SupervisorJob()
+    private val mainScope = CoroutineScope(mainJob + Dispatchers.Main.immediate)
+    private val ioScope = CoroutineScope(ioJob + Dispatchers.IO)
 
     private lateinit var speechRecognizer: SpeechRecognizer
 
     override fun onCreate() {
         super.onCreate()
-        (applicationContext as InterviewComponent).inject(this)
+        useCase = InterviewApplication.appComponent.useCase
         startForegroundServiceWithNotification()
         setupSpeechRecognizer()
     }
@@ -66,6 +66,7 @@ class ForegroundInterviewService : Service() {
             override fun onResults(results: Bundle?) {
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 val question = matches?.firstOrNull()
+                Log.d("InterviewService", "Вопрос: $question")
                 if (!question.isNullOrBlank()) {
                     processQuestion(question)
                 }
@@ -75,6 +76,21 @@ class ForegroundInterviewService : Service() {
             override fun onError(error: Int) {
                 Log.e("InterviewService", "Speech recognition error: $error")
                 startListening()
+//                // Добавим небольшую паузу перед повторной активацией
+//                mainScope.launch {
+//                    delay(500) // 0.5 сек
+//                    restartListening()
+//                }
+            }
+
+            private fun restartListening() {
+                try {
+                    speechRecognizer?.stopListening()
+                    speechRecognizer?.cancel()
+                    startListening()
+                } catch (e: Exception) {
+                    Log.e("SpeechRecognizer", "Error restarting: ${e.message}", e)
+                }
             }
 
             override fun onReadyForSpeech(params: Bundle?) {}
@@ -97,7 +113,7 @@ class ForegroundInterviewService : Service() {
     }
 
     private fun processQuestion(question: String) {
-        serviceScope.launch {
+        ioScope.launch {
             try {
                 val result = useCase(question)
                 speak(result.answer)
@@ -114,7 +130,8 @@ class ForegroundInterviewService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        serviceJob.cancel()
+        ioJob.cancel()
+        mainJob.cancel()
         speechRecognizer.destroy()
     }
 
