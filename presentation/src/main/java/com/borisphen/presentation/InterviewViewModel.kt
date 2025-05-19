@@ -13,12 +13,15 @@ import com.borisphen.presentation.ui.UiEvent.ButtonClick
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -36,8 +39,8 @@ class InterviewViewModel @AssistedInject constructor(
     private val _answerFlow = MutableSharedFlow<String>()
     val answerFlow: SharedFlow<String> = _answerFlow
 
-    private val _sideEffectFlow = MutableSharedFlow<SideEffect>()
-    val sideEffectFlow: SharedFlow<SideEffect> = _sideEffectFlow
+    private val _sideEffectFlow = Channel<SideEffect>(Channel.BUFFERED)
+    val sideEffectFlow: Flow<SideEffect> = _sideEffectFlow.receiveAsFlow()
 
     private val viewEventsFlow = MutableSharedFlow<UiEvent>()
 
@@ -84,7 +87,7 @@ class InterviewViewModel @AssistedInject constructor(
 
     private fun sendSideEffect(sideEffect: SideEffect) {
         viewModelScope.launch {
-            _sideEffectFlow.emit(sideEffect)
+            _sideEffectFlow.send(sideEffect)
         }
     }
 
