@@ -61,7 +61,6 @@ private fun Content(
     val isServiceRunning = state.serviceIsRunning
 
     MyButton(isServiceRunning = isServiceRunning, onClick = { onEvent(UiEvent.ButtonClick) })
-
 }
 
 @Composable
