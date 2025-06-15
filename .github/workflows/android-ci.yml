@@ -2,62 +2,100 @@ name: Android CI/CD (Debug Build)
 
 on:
   push:
-    branches: [ master ]  # Триггер на пуши в master
-  pull_request: # И на PR в master
+    branches: [ master ]
+  pull_request:
     branches: [ master ]
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-
+    permissions: # Добавляем явные права
+      contents: write  # Необходимо для создания релиза
+    environment: Environment
+    env:
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    
     steps:
-      # 1. Checkout кода
       - uses: actions/checkout@v4
 
-      # 2. Установка JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Даем права на gradlew
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Create local.properties
+        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+      - name: Validate API Key
+        run: |
+          if [ -z "$GROQ_API_KEY" ]; then
+            echo "::error::GROQ_API_KEY не установлен!"
+            exit 1
+          fi
+          echo "✅ API Key получен (длина: ${#GROQ_API_KEY} символов)"
+
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      # 4. Кэширование Gradle (ускоряет сборку)
       - name: Cache Gradle
         uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
 
-      # 5. Сборка debug-версии
       - name: Build Debug APK
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug -DGROQ_API_KEY="$GROQ_API_KEY"
 
-      # 6. Создание GitHub Release и загрузка APK
-      - name: Upload APK to GitHub Releases
-        uses: softprops/action-gh-release@v1
-        if: github.ref == 'refs/heads/master'  # Только для master
+      - name: Verify BuildConfig
+        run: |
+          FILE="app/build/generated/source/buildConfig/debug/com/borisphen/interviewassistant/BuildConfig.java"
+          if grep -q 'public static final String GROQ_API_KEY = "' "$FILE"; then
+            echo "✅ BuildConfig сгенерирован корректно"
+          else
+            echo "::error::Не удалось сгенерировать BuildConfig!"
+            exit 1
+          fi
+
+      - name: Create Release
+        id: create-release
+        if: github.ref == 'refs/heads/master'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          files: app/build/outputs/apk/debug/app-debug.apk
-          tag_name: debug-v${{ github.run_number }}  # Авто-тег (debug-v1, debug-v2...)
+          tag_name: debug-v${{ github.run_number }}
+          release_name: Debug v${{ github.run_number }}
           body: |
             Debug build for commit: ${{ github.sha }}
             Собран автоматически через GitHub Actions.
           draft: false
           prerelease: false
 
-      # 7. Уведомление в Telegram
-      - name: Notify Telegram
-        uses: appleboy/telegram-action@master
-        if: github.ref == 'refs/heads/master'  # Только для master
+      - name: Upload APK
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
-          to: '@Borisphen'  # Ваш Telegram username
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}  # Секрет с токеном бота
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: app/build/outputs/apk/debug/app-debug.apk
+          asset_name: app-debug.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Notify Telegram
+        if: github.ref == 'refs/heads/master'
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message: |
             🚀 Новая debug-сборка Android-приложения!
             • Версия: debug-v${{ github.run_number }}
             • Ссылка: https://github.com/${{ github.repository }}/releases/tag/debug-v${{ github.run_number }}
             • Коммит: ${{ github.sha }}
+            
