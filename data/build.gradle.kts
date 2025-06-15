@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
+//    kotlin("kapt")
 }
 
 android {
@@ -37,7 +38,18 @@ dependencies {
     implementation(project(":domain"))
 
     implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+//    kapt(libs.dagger.compiler)
+
+    api(libs.okhttp)
+    api(libs.okhttp.logging)
+    api(libs.retrofit)
+
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.converter.moshi)
+
+    ksp(libs.moshi.kotlin.codegen)
+    ksp(libs.dagger.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

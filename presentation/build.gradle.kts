@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
+//    kotlin("kapt")
 }
 
 android {
@@ -65,7 +66,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
     implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    implementation(libs.androidx.foundation.layout.android)
+//    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.material3)

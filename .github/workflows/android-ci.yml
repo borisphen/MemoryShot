@@ -1,0 +1,63 @@
+name: Android CI/CD (Debug Build)
+
+on:
+  push:
+    branches: [ master ]  # Триггер на пуши в master
+  pull_request: # И на PR в master
+    branches: [ master ]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout кода
+      - uses: actions/checkout@v4
+
+      # 2. Установка JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # 3. Даем права на gradlew
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      # 4. Кэширование Gradle (ускоряет сборку)
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+
+      # 5. Сборка debug-версии
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      # 6. Создание GitHub Release и загрузка APK
+      - name: Upload APK to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        if: github.ref == 'refs/heads/master'  # Только для master
+        with:
+          files: app/build/outputs/apk/debug/app-debug.apk
+          tag_name: debug-v${{ github.run_number }}  # Авто-тег (debug-v1, debug-v2...)
+          body: |
+            Debug build for commit: ${{ github.sha }}
+            Собран автоматически через GitHub Actions.
+          draft: false
+          prerelease: false
+
+      # 7. Уведомление в Telegram
+      - name: Notify Telegram
+        uses: appleboy/telegram-action@master
+        if: github.ref == 'refs/heads/master'  # Только для master
+        with:
+          to: '@Borisphen'  # Ваш Telegram username
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}  # Секрет с токеном бота
+          message: |
+            🚀 Новая debug-сборка Android-приложения!
+            • Версия: debug-v${{ github.run_number }}
+            • Ссылка: https://github.com/${{ github.repository }}/releases/tag/debug-v${{ github.run_number }}
+            • Коммит: ${{ github.sha }}

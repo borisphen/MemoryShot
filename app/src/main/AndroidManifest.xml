@@ -33,7 +33,7 @@
         </activity>
 
         <service
-            android:name=".service.ForegroundInterviewService2"
+            android:name=".service.ForegroundInterviewService"
             android:exported="false"
             android:foregroundServiceType="mediaProjection|microphone" />
     </application>
