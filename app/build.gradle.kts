@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.detekt)
 //    kotlin("kapt")
 }
 
@@ -21,6 +22,14 @@ val groqApiKey = System.getenv("GROQ_API_KEY") ?: localProperties.getProperty("G
                 2. В local.properties (для локальной сборки)
             """.trimIndent()
 )
+
+kotlin {
+    jvmToolchain(17)
+
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
+}
 
 android {
     namespace = "com.borisphen.interviewassistant"
@@ -50,16 +59,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
+}
+
+detekt {
+    toolVersion = "1.23.3"
+    config.setFrom(files("../config/detekt.yml"))
 }
 
 dependencies {
