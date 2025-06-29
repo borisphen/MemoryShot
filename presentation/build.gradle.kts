@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.borisphen.interviewassistant"
+    namespace = "com.borisphen.memoryshot"
     compileSdk = 35
 
     defaultConfig {
@@ -55,6 +55,7 @@ android {
 dependencies {
 
     implementation(project(":domain"))
+    implementation(project(":util"))
 
 //    implementation(libs.vosk)
 

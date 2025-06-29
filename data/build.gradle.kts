@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.borisphen.interviewassistant.data"
+    namespace = "com.borisphen.memoryshot.data"
     compileSdk = 35
 
     defaultConfig {
@@ -36,6 +36,7 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":util"))
 
     implementation(libs.dagger)
 //    kapt(libs.dagger.compiler)
