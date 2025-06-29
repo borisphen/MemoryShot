@@ -25,18 +25,17 @@ val groqApiKey = System.getenv("GROQ_API_KEY") ?: localProperties.getProperty("G
 
 kotlin {
     jvmToolchain(17)
-
     compilerOptions {
         jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 
 android {
-    namespace = "com.borisphen.interviewassistant"
+    namespace = "com.borisphen.memoryshot"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.borisphen.interviewassistant"
+        applicationId = "com.borisphen.memoryshot"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

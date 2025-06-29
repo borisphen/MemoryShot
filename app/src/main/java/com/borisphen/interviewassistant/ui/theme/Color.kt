@@ -1,4 +1,4 @@
-package com.borisphen.interviewassistant.ui.theme
+package com.borisphen.memoryshot.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

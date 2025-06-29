@@ -1,4 +1,4 @@
-package com.borisphen.interviewassistant.service
+package com.borisphen.memoryshot.service
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -9,9 +9,9 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.borisphen.interviewassistant.InterviewApplication
-import com.borisphen.interviewassistant.domain.ProcessInterviewUseCase
-import com.borisphen.interviewassistant.domain.speech.RecognizerEngine
+import com.borisphen.memoryshot.InterviewApplication
+import com.borisphen.memoryshot.domain.ProcessInterviewUseCase
+import com.borisphen.memoryshot.domain.speech.RecognizerEngine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -57,7 +57,7 @@ class ForegroundInterviewService : Service() {
             manager.createNotificationChannel(channel)
         }
         val notification: Notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Interview Assistant")
+            .setContentTitle("Memory Shot")
             .setContentText("Listening for questions...")
             .setSmallIcon(android.R.drawable.ic_btn_speak_now)
             .build()

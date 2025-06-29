@@ -20,7 +20,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Interview Assistant"
+rootProject.name = "Memory Shot"
 include(":app")
 include(":presentation")
 include(":domain")

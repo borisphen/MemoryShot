@@ -1,8 +1,7 @@
-package com.borisphen.interviewassistant.data
+package com.borisphen.memoryshot.data
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

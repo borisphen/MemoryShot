@@ -1,4 +1,4 @@
-package com.borisphen.interviewassistant.data.model
+package com.borisphen.memoryshot.data.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

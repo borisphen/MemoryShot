@@ -1,9 +1,9 @@
-package com.borisphen.interviewassistant.di
+package com.borisphen.memoryshot.di
 
-import com.borisphen.interviewassistant.config.GroqApiConfig
-import com.borisphen.interviewassistant.data.config.ApiConfig
-import com.borisphen.interviewassistant.domain.service.ServiceController
-import com.borisphen.interviewassistant.service.ServiceControllerImpl
+import com.borisphen.memoryshot.config.GroqApiConfig
+import com.borisphen.memoryshot.data.config.ApiConfig
+import com.borisphen.memoryshot.domain.service.ServiceController
+import com.borisphen.memoryshot.service.ServiceControllerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -19,3 +19,4 @@ interface AppModule {
         fun provideAppConfig(): ApiConfig = GroqApiConfig()
     }
 }
+

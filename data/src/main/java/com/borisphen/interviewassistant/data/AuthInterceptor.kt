@@ -1,4 +1,4 @@
-package com.borisphen.interviewassistant.data
+package com.borisphen.memoryshot.data
 
 import android.util.Log
 import okhttp3.Interceptor

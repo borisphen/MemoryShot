@@ -1,4 +1,4 @@
-package com.borisphen.interviewassistant.ui.theme
+package com.borisphen.memoryshot.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

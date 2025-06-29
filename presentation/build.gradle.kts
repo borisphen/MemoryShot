@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.borisphen.interviewassistant"
+    namespace = "com.borisphen.memoryshot"
     compileSdk = 35
 
     defaultConfig {

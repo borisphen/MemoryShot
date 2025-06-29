@@ -1,11 +1,11 @@
-package com.borisphen.interviewassistant.di
+package com.borisphen.memoryshot.di
 
 import android.content.Context
-import com.borisphen.interviewassistant.data.di.DataModule
-import com.borisphen.interviewassistant.data.di.NetworkModule
-import com.borisphen.interviewassistant.service.ForegroundInterviewService
-import com.borisphen.presentation.di.Dependencies
-import com.borisphen.presentation.di.SpeechModule
+import com.borisphen.memoryshot.data.di.DataModule
+import com.borisphen.memoryshot.data.di.NetworkModule
+import com.borisphen.memoryshot.presentation.di.Dependencies
+import com.borisphen.memoryshot.presentation.di.SpeechModule
+import com.borisphen.memoryshot.service.ForegroundInterviewService
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

@@ -1,7 +1,7 @@
-package com.borisphen.interviewassistant.data.service
+package com.borisphen.memoryshot.data.service
 
-import com.borisphen.interviewassistant.data.model.ChatRequest
-import com.borisphen.interviewassistant.data.model.ChatResponse
+import com.borisphen.memoryshot.data.model.ChatRequest
+import com.borisphen.memoryshot.data.model.ChatResponse
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST

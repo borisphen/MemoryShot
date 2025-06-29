@@ -1,4 +1,4 @@
-package com.borisphen.interviewassistant.data
+package com.borisphen.memoryshot.data
 
 import android.content.Context
 

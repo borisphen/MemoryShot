@@ -1,4 +1,4 @@
-package com.borisphen.interviewassistant
+package com.borisphen.memoryshot
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -22,9 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.borisphen.presentation.InterviewViewModel
-import com.borisphen.presentation.di.InterviewComponent
-import com.borisphen.presentation.ui.RootContent
+import com.borisphen.memoryshot.presentation.InterviewViewModel
+import com.borisphen.memoryshot.presentation.di.InterviewComponent
+import com.borisphen.memoryshot.presentation.ui.RootContent
 import kotlinx.coroutines.flow.collectLatest
 
 class MainActivity : ComponentActivity() {

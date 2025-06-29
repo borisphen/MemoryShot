@@ -1,8 +1,8 @@
-package com.borisphen.interviewassistant
+package com.borisphen.memoryshot
 
 import android.app.Application
-import com.borisphen.interviewassistant.di.AppComponent
-import com.borisphen.interviewassistant.di.DaggerAppComponent
+import com.borisphen.memoryshot.di.AppComponent
+import com.borisphen.memoryshot.di.DaggerAppComponent
 
 class InterviewApplication : Application() {
 
@@ -20,3 +20,4 @@ class InterviewApplication : Application() {
             private set
     }
 }
+

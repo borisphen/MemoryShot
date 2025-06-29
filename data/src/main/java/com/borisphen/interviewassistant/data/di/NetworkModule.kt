@@ -1,8 +1,8 @@
-package com.borisphen.interviewassistant.data.di
+package com.borisphen.memoryshot.data.di
 
-import com.borisphen.interviewassistant.data.AuthInterceptor
-import com.borisphen.interviewassistant.data.config.ApiConfig
-import com.borisphen.interviewassistant.data.service.GroqApiService
+import com.borisphen.memoryshot.data.AuthInterceptor
+import com.borisphen.memoryshot.data.config.ApiConfig
+import com.borisphen.memoryshot.data.service.GroqApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

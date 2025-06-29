@@ -331,7 +331,7 @@ naming:
   FunctionNaming:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**' ]
-    functionPattern: '[a-z][a-zA-Z0-9]*'
+    functionPattern: '([a-z][a-zA-Z0-9]*)|(@Composable\s+[A-Z][a-zA-Z0-9]*)|([A-Z][a-zA-Z0-9]*)'
     excludeClassPattern: '$^'
   FunctionParameterNaming:
     active: true
@@ -579,11 +579,15 @@ style:
         value: 'STOPSHIP:'
       - reason: 'Forbidden TODO todo marker in comment, please do the changes.'
         value: 'TODO:'
-    allowedPatterns: ''
+  allowedPatterns:
+    - "^.*TODO\\(\\w+\\).*$"        # Разрешает TODO(username)
+    - "^.*TODO:\\w+.*$"             # Разрешает TODO: 
+    - "^.*TODO\\[[A-Z]+-\\d+\\].*$" # Разрешает TODO[PROJ-123]
+    - "^.*FIXME\\(\\w+\\).*$"       # Аналогично для FIXME
   ForbiddenImport:
     active: false
     imports: [ ]
-    forbiddenPatterns: ''
+    forbiddenPatte- "^.*TODO:\\w+.*$" rns: ''
   ForbiddenMethodCall:
     active: false
     methods:

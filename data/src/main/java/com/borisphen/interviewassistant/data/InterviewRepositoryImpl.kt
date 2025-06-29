@@ -1,10 +1,10 @@
-package com.borisphen.interviewassistant.data
+package com.borisphen.memoryshot.data
 
-import com.borisphen.interviewassistant.data.model.ChatRequest
-import com.borisphen.interviewassistant.data.model.Message
-import com.borisphen.interviewassistant.data.service.GroqApiService
-import com.borisphen.interviewassistant.domain.InterviewRepository
-import com.borisphen.interviewassistant.domain.InterviewResult
+import com.borisphen.memoryshot.data.model.ChatRequest
+import com.borisphen.memoryshot.data.model.Message
+import com.borisphen.memoryshot.data.service.GroqApiService
+import com.borisphen.memoryshot.domain.InterviewRepository
+import com.borisphen.memoryshot.domain.InterviewResult
 
 class InterviewRepositoryImpl(private val service: GroqApiService) : InterviewRepository {
 
