@@ -11,7 +11,9 @@ kotlin {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
 }
+
 dependencies {
-    implementation(project(":util"))
+    api(libs.retrofit)
+    implementation(libs.moshi.kotlin)
     implementation(libs.kotlinx.coroutines.core)
 }
