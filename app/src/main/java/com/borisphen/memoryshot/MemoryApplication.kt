@@ -4,7 +4,7 @@ import android.app.Application
 import com.borisphen.memoryshot.di.AppComponent
 import com.borisphen.memoryshot.di.DaggerAppComponent
 
-class InterviewApplication : Application() {
+class MemoryApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

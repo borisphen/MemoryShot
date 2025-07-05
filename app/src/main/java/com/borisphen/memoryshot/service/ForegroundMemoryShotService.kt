@@ -9,8 +9,8 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.borisphen.memoryshot.InterviewApplication
-import com.borisphen.memoryshot.domain.ProcessInterviewUseCase
+import com.borisphen.memoryshot.MemoryApplication
+import com.borisphen.memoryshot.domain.ProcessAiUseCase
 import com.borisphen.memoryshot.domain.speech.RecognizerEngine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,10 +19,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ForegroundInterviewService : Service() {
+class ForegroundMemoryShotService : Service() {
 
     @Inject
-    lateinit var useCase: ProcessInterviewUseCase
+    lateinit var useCase: ProcessAiUseCase
 
     @Inject
     lateinit var recognizer: RecognizerEngine
@@ -32,12 +32,19 @@ class ForegroundInterviewService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        InterviewApplication.appComponent.inject(this)
+        MemoryApplication.appComponent.inject(this)
         recognizer.setCallback { text ->
-            Log.d("InterviewService", "Вопрос: $text")
+            Log.d("ForegroundMemoryShotService", "Вопрос: $text")
             serviceScope.launch {
-                val result = useCase(text)
-                // TODO: Озвучить результат через TextToSpeech или AudioTrack
+                val result = useCase(text).fold(
+                    ifRight = { answer ->
+                        Log.d("ForegroundMemoryShotService", "Ответ: ${answer.answer}")
+                        // TODO: Озвучить результат через TextToSpeech или AudioTrack
+                    },
+                    ifLeft = {
+                        // TODO: Обработать ошибку
+                    }
+                )
                 delay(200)
                 recognizer.start()
             }

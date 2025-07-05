@@ -55,6 +55,7 @@ android {
 dependencies {
 
     implementation(project(":domain"))
+    implementation(project(":util"))
 
 //    implementation(libs.vosk)
 

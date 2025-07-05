@@ -22,8 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.borisphen.memoryshot.presentation.InterviewViewModel
-import com.borisphen.memoryshot.presentation.di.InterviewComponent
+import com.borisphen.memoryshot.presentation.MainViewModel
+import com.borisphen.memoryshot.presentation.di.AiComponent
 import com.borisphen.memoryshot.presentation.ui.RootContent
 import kotlinx.coroutines.flow.collectLatest
 
@@ -42,8 +42,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val dependencies = InterviewApplication.appComponent
-        val component: InterviewComponent = InterviewComponent.factory().create(dependencies)
+        val dependencies = MemoryApplication.appComponent
+        val component: AiComponent = AiComponent.factory().create(dependencies)
 
         setContent {
 //            InterviewApp()
@@ -79,11 +79,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun InterviewApp() {
 
-    val dependencies = InterviewApplication.appComponent
-    val component: InterviewComponent =
-        remember { InterviewComponent.factory().create(dependencies) }
+    val dependencies = MemoryApplication.appComponent
+    val component: AiComponent =
+        remember { AiComponent.factory().create(dependencies) }
 
-    val viewModel: InterviewViewModel =
+    val viewModel: MainViewModel =
         remember { component.viewModelFactory.create(dependencies.useCase) }
 
     LaunchedEffect(Unit) {

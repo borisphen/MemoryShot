@@ -11,12 +11,12 @@ class ServiceControllerImpl @Inject constructor(
 ) : ServiceController {
 
     override fun startInterviewService() {
-        val intent = Intent(context, ForegroundInterviewService::class.java)
+        val intent = Intent(context, ForegroundMemoryShotService::class.java)
         ContextCompat.startForegroundService(context, intent)
     }
 
     override fun stopInterviewService() {
-        val intent = Intent(context, ForegroundInterviewService::class.java)
+        val intent = Intent(context, ForegroundMemoryShotService::class.java)
         context.stopService(intent)
     }
 }

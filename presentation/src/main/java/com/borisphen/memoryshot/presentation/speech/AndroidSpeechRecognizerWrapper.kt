@@ -46,6 +46,7 @@ class AndroidSpeechRecognizerWrapper @Inject constructor(
     }
 
     override fun stop() {
+        callback = {}
         recognizer?.stopListening()
         recognizer?.destroy()
         mainScope.cancel()

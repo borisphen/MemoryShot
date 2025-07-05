@@ -18,14 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.borisphen.memoryshot.presentation.InterviewViewModel
-import com.borisphen.memoryshot.presentation.di.InterviewComponent
+import com.borisphen.memoryshot.presentation.MainViewModel
+import com.borisphen.memoryshot.presentation.di.AiComponent
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun RootContent(component: InterviewComponent) {
+fun RootContent(component: AiComponent) {
 
-    val viewModel: InterviewViewModel =
+    val viewModel: MainViewModel =
         remember { component.viewModelFactory.create(component.useCase) }
 
     val state by viewModel.uiState.collectAsState()
@@ -58,9 +58,7 @@ private fun Content(
     state: AppState,
     onEvent: (UiEvent) -> Unit
 ) {
-    val isServiceRunning = state.serviceIsRunning
-
-    MyButton(isServiceRunning = isServiceRunning, onClick = { onEvent(UiEvent.ButtonClick) })
+    MyButton(isServiceRunning = state.serviceIsRunning, onClick = { onEvent(UiEvent.ButtonClick) })
 }
 
 @Composable
