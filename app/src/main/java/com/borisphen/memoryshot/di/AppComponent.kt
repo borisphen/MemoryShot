@@ -26,3 +26,4 @@ interface AppComponent : Dependencies {
         fun create(@BindsInstance context: Context): AppComponent
     }
 }
+
