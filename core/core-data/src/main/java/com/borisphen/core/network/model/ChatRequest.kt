@@ -1,4 +1,4 @@
-package com.borisphen.memoryshot.data.model
+package com.borisphen.core.network.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

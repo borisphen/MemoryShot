@@ -80,6 +80,7 @@ dependencies {
     implementation(project(":feature:feature-voice:presentation"))
     implementation(project(":feature:feature-voice:data"))
     implementation(project(":util"))
+    implementation(project(":core:core-data"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

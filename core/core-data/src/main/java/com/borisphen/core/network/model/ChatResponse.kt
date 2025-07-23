@@ -1,4 +1,4 @@
-package com.borisphen.memoryshot.data.model
+package com.borisphen.core.network.model
 
 data class ChatResponse(
     val choices: List<Choice>

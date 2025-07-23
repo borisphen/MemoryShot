@@ -2,11 +2,10 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
-//    kotlin("kapt")
 }
 
 android {
-    namespace = "com.borisphen.memoryshot.data"
+    namespace = "com.borisphen.core"
     compileSdk = 35
 
     defaultConfig {
@@ -32,15 +31,17 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+//        compose = true
+        buildConfig = true
+    }
 }
 
 dependencies {
-    implementation(project(":feature:feature-voice:domain"))
-    implementation(project(":util"))
-    implementation(project(":core:core-data"))
 
-    implementation(libs.dagger)
-//    kapt(libs.dagger.compiler)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
 
     api(libs.okhttp)
     api(libs.okhttp.logging)
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.converter.moshi)
 
+    implementation(libs.dagger)
     ksp(libs.moshi.kotlin.codegen)
     ksp(libs.dagger.compiler)
 

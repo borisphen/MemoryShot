@@ -1,8 +1,8 @@
 package com.borisphen.memoryshot.data
 
-import com.borisphen.memoryshot.data.model.ChatRequest
-import com.borisphen.memoryshot.data.model.Message
-import com.borisphen.memoryshot.data.service.GroqApiService
+import com.borisphen.core.network.model.ChatRequest
+import com.borisphen.core.network.model.Message
+import com.borisphen.core.network.service.GroqApiService
 import com.borisphen.memoryshot.domain.AiRepository
 import com.borisphen.memoryshot.domain.AiResult
 import com.borisphen.util.Either

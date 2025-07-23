@@ -26,4 +26,4 @@ include(":feature:feature-voice:presentation")
 include(":feature:feature-voice:domain")
 include(":feature:feature-voice:data")
 include(":util")
- 
+include(":core:core-data")

@@ -1,4 +1,4 @@
-package com.borisphen.memoryshot.data
+package com.borisphen.core.network
 
 import android.util.Log
 import okhttp3.Interceptor

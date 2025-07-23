@@ -1,12 +1,15 @@
 package com.borisphen.memoryshot.di
 
-import com.borisphen.memoryshot.config.GroqApiConfig
-import com.borisphen.memoryshot.data.config.ApiConfig
+import com.borisphen.core.config.ApiConfig
+import com.borisphen.core.config.GroqApiConfig
+import com.borisphen.memoryshot.BuildConfig
 import com.borisphen.memoryshot.domain.service.ServiceController
 import com.borisphen.memoryshot.service.ServiceControllerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
 interface AppModule {
@@ -16,7 +19,14 @@ interface AppModule {
 
     companion object {
         @Provides
-        fun provideAppConfig(): ApiConfig = GroqApiConfig()
+        @Named("groqApiKey")
+        fun provideGroqApiKey(): String = BuildConfig.GROQ_API_KEY
+
+        @Provides
+        @Singleton
+        fun provideApiConfig(
+            @Named("groqApiKey") groqApiKey: String
+        ): ApiConfig = GroqApiConfig(groqApiKey)
     }
 }
 

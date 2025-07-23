@@ -1,8 +1,8 @@
-package com.borisphen.memoryshot.data.di
+package com.borisphen.core.network.di
 
-import com.borisphen.memoryshot.data.AuthInterceptor
-import com.borisphen.memoryshot.data.config.ApiConfig
-import com.borisphen.memoryshot.data.service.GroqApiService
+import com.borisphen.core.config.ApiConfig
+import com.borisphen.core.network.AuthInterceptor
+import com.borisphen.core.network.service.GroqApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -45,9 +45,9 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient, appConfig: ApiConfig): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(appConfig.baseUrl)
             .client(okHttpClient)
             .addConverterFactory(
                 MoshiConverterFactory.create(
@@ -65,13 +65,14 @@ class NetworkModule {
         return retrofit.create(GroqApiService::class.java)
     }
 
+
 //    @Provides
 //    @Singleton
 //    fun provideMoshi(): Moshi = Moshi.Builder()
 //            .add(KotlinJsonAdapterFactory())
 //            .build()
 
-    companion object {
-        const val BASE_URL = "https://api.groq.com/"
-    }
+//    companion object {
+//        const val BASE_URL = "https://api.groq.com/"
+//    }
 }

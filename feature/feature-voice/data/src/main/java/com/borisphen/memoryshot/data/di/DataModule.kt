@@ -1,7 +1,7 @@
 package com.borisphen.memoryshot.data.di
 
+import com.borisphen.core.network.service.GroqApiService
 import com.borisphen.memoryshot.data.AiRepositoryImpl
-import com.borisphen.memoryshot.data.service.GroqApiService
 import com.borisphen.memoryshot.domain.AiRepository
 import com.borisphen.memoryshot.domain.ProcessAiUseCase
 import dagger.Binds
