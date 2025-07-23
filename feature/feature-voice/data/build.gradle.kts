@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(project(":feature:feature-voice:domain"))
     implementation(project(":util"))
 
     implementation(libs.dagger)

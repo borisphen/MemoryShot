@@ -54,10 +54,8 @@ android {
 
 dependencies {
 
-    implementation(project(":domain"))
+    implementation(project(":feature:feature-voice:domain"))
     implementation(project(":util"))
-
-//    implementation(libs.vosk)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

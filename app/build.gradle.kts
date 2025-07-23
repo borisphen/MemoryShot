@@ -76,9 +76,9 @@ detekt {
 }
 
 dependencies {
-    implementation(project(":domain"))
-    implementation(project(":presentation"))
-    implementation(project(":data"))
+    implementation(project(":feature:feature-voice:domain"))
+    implementation(project(":feature:feature-voice:presentation"))
+    implementation(project(":feature:feature-voice:data"))
     implementation(project(":util"))
 
     implementation(libs.androidx.core.ktx)

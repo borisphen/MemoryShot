@@ -22,8 +22,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Memory Shot"
 include(":app")
-include(":presentation")
-include(":domain")
-include(":data")
+include(":feature:feature-voice:presentation")
+include(":feature:feature-voice:domain")
+include(":feature:feature-voice:data")
 include(":util")
  
