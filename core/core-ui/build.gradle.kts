@@ -1,12 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-//    alias(libs.plugins.ksp)
-    kotlin("kapt")
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "com.borisphen.core"
+    namespace = "com.borisphen.core.ui"
     compileSdk = 35
 
     defaultConfig {
@@ -26,42 +25,29 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
     buildFeatures {
-//        compose = true
-        buildConfig = true
+        compose = true
     }
 }
 
 dependencies {
 
-    implementation(project(":util"))
-    implementation(project(":core:core-domain"))
-    implementation(libs.kotlinx.coroutines.core)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-
-    api(libs.okhttp)
-    api(libs.okhttp.logging)
-    api(libs.retrofit)
-
-    implementation(libs.moshi)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.converter.moshi)
-
-    implementation(libs.dagger)
-//    ksp(libs.moshi.kotlin.codegen)
-//    ksp(libs.dagger.compiler)
-    kapt(libs.dagger.compiler)
-    
     testImplementation(libs.junit)
+
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.material3)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

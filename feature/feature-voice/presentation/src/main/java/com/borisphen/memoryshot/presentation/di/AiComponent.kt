@@ -1,6 +1,6 @@
 package com.borisphen.memoryshot.presentation.di
 
-import com.borisphen.memoryshot.domain.ProcessAiUseCase
+import com.borisphen.core.domain.ai.ProcessAiUseCase
 import com.borisphen.memoryshot.presentation.MainViewModel
 import dagger.Component
 

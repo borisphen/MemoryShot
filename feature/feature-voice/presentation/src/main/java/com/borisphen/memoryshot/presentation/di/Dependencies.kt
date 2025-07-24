@@ -1,8 +1,8 @@
 package com.borisphen.memoryshot.presentation.di
 
-import com.borisphen.memoryshot.domain.ProcessAiUseCase
+import com.borisphen.core.domain.ai.ProcessAiUseCase
+import com.borisphen.core.domain.speech.RecognizerEngine
 import com.borisphen.memoryshot.domain.service.ServiceController
-import com.borisphen.memoryshot.domain.speech.RecognizerEngine
 
 interface Dependencies {
     val useCase: ProcessAiUseCase

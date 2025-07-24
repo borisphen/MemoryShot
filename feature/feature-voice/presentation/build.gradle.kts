@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
-//    kotlin("kapt")
+//    alias(libs.plugins.ksp)
+    kotlin("kapt")
 }
 
 android {
@@ -47,15 +47,14 @@ android {
             )
         }
     }
-    aaptOptions {
-        noCompress += listOf("model", "txt", "json", "bin")
-    }
 }
 
 dependencies {
 
     implementation(project(":feature:feature-voice:domain"))
     implementation(project(":util"))
+    implementation(project(":core:core-ui"))
+    implementation(project(":core:core-domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -63,11 +62,11 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.foundation.layout.android)
 
     implementation(libs.dagger)
-    implementation(libs.androidx.foundation.layout.android)
-//    kapt(libs.dagger.compiler)
-    ksp(libs.dagger.compiler)
+    kapt(libs.dagger.compiler)
+//    ksp(libs.dagger.compiler)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.material3)

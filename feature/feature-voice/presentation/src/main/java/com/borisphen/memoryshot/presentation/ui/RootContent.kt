@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.borisphen.core.ui.theme.InterviewAssistantTheme
 import com.borisphen.memoryshot.presentation.MainViewModel
 import com.borisphen.memoryshot.presentation.di.AiComponent
 import kotlinx.coroutines.flow.collectLatest
@@ -50,7 +52,9 @@ fun RootContent(component: AiComponent) {
         viewModel.onViewEvent(it)
     }
 
-    Content(state = state, onEvent = onUiEvent)
+    InterviewAssistantTheme {
+        Content(state = state, onEvent = onUiEvent)
+    }
 }
 
 @Composable
@@ -58,7 +62,11 @@ private fun Content(
     state: AppState,
     onEvent: (UiEvent) -> Unit
 ) {
-    MyButton(isServiceRunning = state.serviceIsRunning, onClick = { onEvent(UiEvent.ButtonClick) })
+    Surface(modifier = Modifier.fillMaxSize()) {
+        MyButton(
+            isServiceRunning = state.serviceIsRunning,
+            onClick = { onEvent(UiEvent.ButtonClick) })
+    }
 }
 
 @Composable

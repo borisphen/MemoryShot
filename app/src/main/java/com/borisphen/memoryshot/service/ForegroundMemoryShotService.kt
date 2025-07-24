@@ -9,9 +9,9 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.borisphen.core.domain.ai.ProcessAiUseCase
+import com.borisphen.core.domain.speech.RecognizerEngine
 import com.borisphen.memoryshot.MemoryApplication
-import com.borisphen.memoryshot.domain.ProcessAiUseCase
-import com.borisphen.memoryshot.domain.speech.RecognizerEngine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

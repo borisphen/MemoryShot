@@ -2,7 +2,7 @@ package com.borisphen.memoryshot.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.borisphen.memoryshot.domain.ProcessAiUseCase
+import com.borisphen.core.domain.ai.ProcessAiUseCase
 import com.borisphen.memoryshot.domain.service.ServiceController
 import com.borisphen.memoryshot.presentation.ui.AppState
 import com.borisphen.memoryshot.presentation.ui.SideEffect

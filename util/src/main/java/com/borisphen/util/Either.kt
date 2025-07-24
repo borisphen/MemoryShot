@@ -46,11 +46,11 @@ inline fun <L, R, T> Either<L, R>.map(transform: (R) -> T): Either<L, T> = when 
     is Either.Left -> this
 }
 
-inline fun <L : Throwable, R, T> Either<L, R>.mapCatching(transform: (R) -> T): Either<L, T> =
-    when (this) {
-        is Either.Right -> Either.catch { transform(value) }.mapLeft { it as L }
-        is Either.Left -> this
-    }
+//inline fun <L : Throwable, R, T> Either<L, R>.mapCatching(transform: (R) -> T): Either<L, T> =
+//    when (this) {
+//        is Either.Right -> Either.catch { transform(value) }.mapLeft { it as L }
+//        is Either.Left -> this
+//    }
 
 inline fun <L, R, T> Either<L, R?>.mapNotNull(transform: (R) -> T): Either<L, T?> = when (this) {
     is Either.Right -> if (value != null) transform(value).right() else Either.Right(null)

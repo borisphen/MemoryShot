@@ -27,3 +27,6 @@ include(":feature:feature-voice:domain")
 include(":feature:feature-voice:data")
 include(":util")
 include(":core:core-data")
+include(":core:core-domain")
+include(":core:core-ui")
+ 

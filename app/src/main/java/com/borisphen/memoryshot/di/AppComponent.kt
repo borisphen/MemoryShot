@@ -1,10 +1,10 @@
 package com.borisphen.memoryshot.di
 
 import android.content.Context
-import com.borisphen.core.network.di.NetworkModule
-import com.borisphen.memoryshot.data.di.DataModule
+import com.borisphen.core.data.di.DataModule
+import com.borisphen.core.data.di.SpeechModule
+import com.borisphen.core.data.network.di.NetworkModule
 import com.borisphen.memoryshot.presentation.di.Dependencies
-import com.borisphen.memoryshot.presentation.di.SpeechModule
 import com.borisphen.memoryshot.service.ForegroundMemoryShotService
 import dagger.BindsInstance
 import dagger.Component
