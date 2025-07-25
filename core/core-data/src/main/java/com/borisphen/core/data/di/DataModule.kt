@@ -1,9 +1,11 @@
 package com.borisphen.core.data.di
 
 import com.borisphen.core.data.AiRepositoryImpl
+import com.borisphen.core.data.mapper.MemoryNoteMapper
 import com.borisphen.core.data.network.service.GroqApiService
 import com.borisphen.core.domain.ai.AiRepository
 import com.borisphen.core.domain.ai.ProcessAiUseCase
+import com.squareup.moshi.Moshi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -27,6 +29,12 @@ interface DataModule {
         @Singleton
         fun provideUseCase(repository: AiRepository): ProcessAiUseCase {
             return ProcessAiUseCase(repository)
+        }
+
+        @Provides
+        @Singleton
+        fun provideMemoryNoteMapper(moshi: Moshi): MemoryNoteMapper {
+            return MemoryNoteMapper(moshi)
         }
     }
 }

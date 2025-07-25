@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-//    alias(libs.plugins.ksp)
-    kotlin("kapt")
+    alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -38,6 +39,10 @@ android {
     }
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
 
     implementation(project(":util"))
@@ -57,9 +62,13 @@ dependencies {
     implementation(libs.converter.moshi)
 
     implementation(libs.dagger)
-//    ksp(libs.moshi.kotlin.codegen)
+    ksp(libs.moshi.kotlin.codegen)
 //    ksp(libs.dagger.compiler)
     kapt(libs.dagger.compiler)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

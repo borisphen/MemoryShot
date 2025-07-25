@@ -36,7 +36,7 @@ class ForegroundMemoryShotService : Service() {
         recognizer.setCallback { text ->
             Log.d("ForegroundMemoryShotService", "Вопрос: $text")
             serviceScope.launch {
-                val result = useCase(text).fold(
+                useCase(text).fold(
                     ifRight = { answer ->
                         Log.d("ForegroundMemoryShotService", "Ответ: ${answer.answer}")
                         // TODO: Озвучить результат через TextToSpeech или AudioTrack

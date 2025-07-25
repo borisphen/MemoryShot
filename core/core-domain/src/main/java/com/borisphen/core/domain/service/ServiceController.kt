@@ -1,4 +1,4 @@
-package com.borisphen.memoryshot.domain.service
+package com.borisphen.core.domain.service
 
 interface ServiceController {
     fun startInterviewService()

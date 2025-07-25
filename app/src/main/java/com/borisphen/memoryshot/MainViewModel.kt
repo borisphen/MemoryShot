@@ -3,7 +3,7 @@ package com.borisphen.memoryshot
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.borisphen.core.domain.ai.ProcessAiUseCase
-import com.borisphen.memoryshot.domain.service.ServiceController
+import com.borisphen.core.domain.service.ServiceController
 import com.borisphen.memoryshot.ui.AppState
 import com.borisphen.memoryshot.ui.SideEffect
 import com.borisphen.memoryshot.ui.SideEffect.StartService

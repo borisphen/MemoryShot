@@ -3,7 +3,7 @@ package com.borisphen.memoryshot.service
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
-import com.borisphen.memoryshot.domain.service.ServiceController
+import com.borisphen.core.domain.service.ServiceController
 import javax.inject.Inject
 
 class ServiceControllerImpl @Inject constructor(

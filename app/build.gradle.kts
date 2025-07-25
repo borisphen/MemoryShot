@@ -5,8 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-//    alias(libs.plugins.detekt)
-    kotlin("kapt")
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 // Чтение ключей
@@ -70,10 +70,10 @@ android {
     }
 }
 
-//detekt {
-//    toolVersion = "1.23.3"
-//    config.setFrom(files("../config/detekt.yml"))
-//}
+detekt {
+    toolVersion = "1.23.3"
+    config.setFrom(files("../config/detekt.yml"))
+}
 
 dependencies {
     implementation(project(":feature:feature-voice:domain"))
@@ -99,7 +99,7 @@ dependencies {
 
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
-    kapt(libs.moshi.kotlin.codegen)
+    ksp(libs.moshi.kotlin.codegen)
 
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)

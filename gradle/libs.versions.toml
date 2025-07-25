@@ -2,7 +2,6 @@
 agp = "8.10.0"
 vosk = "0.3.32"
 dagger = "2.50"
-kotlin = "2.0.21"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -25,7 +24,9 @@ okhttp = "4.12.0"
 moshi = "1.15.2"
 detekt = "1.23.3"
 materialVersion = "1.12.0"
-ksp = "2.0.21-1.0.28"
+kotlin = "2.0.21"
+ksp = "2.0.21-1.0.25"
+room = "2.6.1"
 
 [libraries]
 vosk = { module = "org.vosk:android", version.ref = "vosk" }
@@ -61,6 +62,9 @@ moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "mosh
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -70,4 +74,6 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+room = { id = "androidx.room", version.ref = "room" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 
