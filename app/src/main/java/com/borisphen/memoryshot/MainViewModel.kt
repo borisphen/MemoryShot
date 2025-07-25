@@ -1,15 +1,15 @@
-package com.borisphen.memoryshot.presentation
+package com.borisphen.memoryshot
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.borisphen.core.domain.ai.ProcessAiUseCase
 import com.borisphen.memoryshot.domain.service.ServiceController
-import com.borisphen.memoryshot.presentation.ui.AppState
-import com.borisphen.memoryshot.presentation.ui.SideEffect
-import com.borisphen.memoryshot.presentation.ui.SideEffect.StartService
-import com.borisphen.memoryshot.presentation.ui.SideEffect.StopService
-import com.borisphen.memoryshot.presentation.ui.UiEvent
-import com.borisphen.memoryshot.presentation.ui.UiEvent.ButtonClick
+import com.borisphen.memoryshot.ui.AppState
+import com.borisphen.memoryshot.ui.SideEffect
+import com.borisphen.memoryshot.ui.SideEffect.StartService
+import com.borisphen.memoryshot.ui.SideEffect.StopService
+import com.borisphen.memoryshot.ui.UiEvent
+import com.borisphen.memoryshot.ui.UiEvent.ButtonClick
 import com.borisphen.util.mutableSharedFlow
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

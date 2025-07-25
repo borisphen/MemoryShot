@@ -38,6 +38,10 @@ dependencies {
     implementation(project(":feature:feature-voice:domain"))
     implementation(project(":util"))
     implementation(project(":core:core-data"))
+    implementation(project(":core:core-domain"))
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)

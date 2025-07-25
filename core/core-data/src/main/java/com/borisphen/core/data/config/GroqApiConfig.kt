@@ -1,5 +1,7 @@
 package com.borisphen.core.data.config
 
+import com.borisphen.core.domain.config.ApiConfig
+
 class GroqApiConfig(
     private val groqKey: String
 ) : ApiConfig {

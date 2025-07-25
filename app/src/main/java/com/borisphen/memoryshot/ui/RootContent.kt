@@ -1,4 +1,4 @@
-package com.borisphen.memoryshot.presentation.ui
+package com.borisphen.memoryshot.ui
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -20,12 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.borisphen.core.ui.theme.InterviewAssistantTheme
-import com.borisphen.memoryshot.presentation.MainViewModel
-import com.borisphen.memoryshot.presentation.di.AiComponent
+import com.borisphen.memoryshot.MainViewModel
+import com.borisphen.memoryshot.di.AppComponent
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun RootContent(component: AiComponent) {
+fun RootContent(component: AppComponent) {
 
     val viewModel: MainViewModel =
         remember { component.viewModelFactory.create(component.useCase) }

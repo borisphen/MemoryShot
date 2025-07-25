@@ -1,3 +1,3 @@
-package com.borisphen.memoryshot.presentation.ui
+package com.borisphen.memoryshot.ui
 
 data class AppState(val serviceIsRunning: Boolean = false)

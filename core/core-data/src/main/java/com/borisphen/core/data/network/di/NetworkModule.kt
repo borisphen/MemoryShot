@@ -1,8 +1,8 @@
 package com.borisphen.core.data.network.di
 
-import com.borisphen.core.data.config.ApiConfig
 import com.borisphen.core.data.network.AuthInterceptor
 import com.borisphen.core.data.network.service.GroqApiService
+import com.borisphen.core.domain.config.ApiConfig
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

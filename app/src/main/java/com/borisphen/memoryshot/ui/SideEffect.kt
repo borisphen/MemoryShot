@@ -1,4 +1,4 @@
-package com.borisphen.memoryshot.presentation.ui
+package com.borisphen.memoryshot.ui
 
 sealed class SideEffect {
     data object StartService : SideEffect()

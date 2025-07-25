@@ -1,4 +1,4 @@
-package com.borisphen.core.data.config
+package com.borisphen.core.domain.config
 
 interface ApiConfig {
     val apiKey: String

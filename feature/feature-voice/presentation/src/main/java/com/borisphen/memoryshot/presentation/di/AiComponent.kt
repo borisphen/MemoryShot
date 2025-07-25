@@ -1,15 +1,12 @@
 package com.borisphen.memoryshot.presentation.di
 
 import com.borisphen.core.domain.ai.ProcessAiUseCase
-import com.borisphen.memoryshot.presentation.MainViewModel
 import dagger.Component
 
 @Component(
     dependencies = [Dependencies::class]
 )
 interface AiComponent {
-
-    val viewModelFactory: MainViewModel.Factory
 
     val useCase: ProcessAiUseCase
 

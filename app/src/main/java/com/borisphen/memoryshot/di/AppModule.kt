@@ -1,7 +1,7 @@
 package com.borisphen.memoryshot.di
 
-import com.borisphen.core.data.config.ApiConfig
 import com.borisphen.core.data.config.GroqApiConfig
+import com.borisphen.core.domain.config.ApiConfig
 import com.borisphen.memoryshot.BuildConfig
 import com.borisphen.memoryshot.domain.service.ServiceController
 import com.borisphen.memoryshot.service.ServiceControllerImpl
