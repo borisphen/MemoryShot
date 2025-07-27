@@ -1,8 +1,4 @@
 // build-logic/src/main/kotlin/AndroidLibraryConventionPlugin.kt
-// OR build-logic/src/main/kotlin/base/AndroidLibraryConventionPlugin.kt (if using 'base' package)
-
-// If your file is in a 'base' folder, uncomment the following line:
-// package base
 
 import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
@@ -55,10 +51,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 // Kotlin options are now configured via tasks.withType<KotlinCompile>
                 // This block is NOT directly in extensions.configure.
 
-                // Enable Compose
-                buildFeatures {
-                    compose = true
-                }
             } // <--- END of extensions.configure<LibraryExtension> block
 
             // Configure JVM Target for Kotlin compilation tasks (outside the android {} block)

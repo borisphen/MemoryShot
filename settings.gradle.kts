@@ -1,6 +1,8 @@
+// settings.gradle
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -15,8 +17,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-
-includeBuild("build-logic")
 
 rootProject.name = "MemoryShot"
 include(":app")

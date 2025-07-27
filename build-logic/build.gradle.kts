@@ -16,7 +16,6 @@ dependencies {
     implementation(gradleApi())
 }
 
-
 gradlePlugin {
     plugins {
         register("androidLibraryConvention") {
@@ -26,6 +25,10 @@ gradlePlugin {
         register("androidApplicationConvention") {
             id = "com.borisphen.memoryshot.android.application" // Уникальный ID вашего плагина
             implementationClass = "AndroidApplicationConventionPlugin" // Класс, который мы создали
+        }
+        register("composeConvention") {
+            id = "com.borisphen.memoryshot.compose" // Уникальный ID вашего плагина
+            implementationClass = "ComposeConventionPlugin" // Класс, который мы создали
         }
     }
 }

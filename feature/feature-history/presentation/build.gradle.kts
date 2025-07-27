@@ -1,9 +1,10 @@
 plugins {
 //    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.compose)
+//    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
 //    alias(libs.plugins.kotlin.kapt)
     id("com.borisphen.memoryshot.android.library")
+    id("com.borisphen.memoryshot.compose")
 }
 
 android {
