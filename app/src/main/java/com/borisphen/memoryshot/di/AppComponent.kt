@@ -6,7 +6,7 @@ import com.borisphen.core.data.di.NoteDataModule
 import com.borisphen.core.data.di.SpeechModule
 import com.borisphen.core.data.network.di.NetworkModule
 import com.borisphen.memoryshot.MainViewModel
-import com.borisphen.memoryshot.presentation.di.Dependencies
+import com.borisphen.memoryshot.history.presentation.di.HistoryDependencies
 import com.borisphen.memoryshot.service.ForegroundMemoryShotService
 import dagger.BindsInstance
 import dagger.Component
@@ -18,9 +18,10 @@ import javax.inject.Singleton
         SpeechModule::class,
         NetworkModule::class,
         NoteDataModule::class,
+//        HistoryModule::class,
         AppModule::class]
 )
-interface AppComponent : Dependencies {
+interface AppComponent : HistoryDependencies {
 
     val viewModelFactory: MainViewModel.Factory
 

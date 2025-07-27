@@ -1,4 +1,4 @@
-package com.borisphen.memoryshot.presentation.di
+package com.borisphen.memoryshot.voice.presentation.di
 
 import com.borisphen.core.domain.ai.ProcessAiUseCase
 import com.borisphen.core.domain.service.ServiceController

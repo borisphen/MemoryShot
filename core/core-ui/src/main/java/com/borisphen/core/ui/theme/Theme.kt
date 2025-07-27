@@ -15,7 +15,6 @@ import com.borisphen.memoryshot.ui.theme.Purple40
 import com.borisphen.memoryshot.ui.theme.Purple80
 import com.borisphen.memoryshot.ui.theme.PurpleGrey40
 import com.borisphen.memoryshot.ui.theme.PurpleGrey80
-import com.borisphen.memoryshot.ui.theme.Typography
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -40,7 +39,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun InterviewAssistantTheme(
+fun MemoryShotTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,

@@ -1,7 +1,8 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
+//    alias(libs.plugins.android.application)
+    id("com.borisphen.memoryshot.android.application")
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
@@ -34,15 +35,15 @@ android {
     namespace = "com.borisphen.memoryshot"
     compileSdk = 35
 
-    defaultConfig {
-        applicationId = "com.borisphen.memoryshot"
-        minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
+//    defaultConfig {
+//        applicationId = "com.borisphen.memoryshot"
+//        minSdk = 24
+//        targetSdk = 35
+//        versionCode = 1
+//        versionName = "1.0"
+//
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//    }
 
     buildTypes {
         debug {
@@ -79,6 +80,9 @@ dependencies {
     implementation(project(":feature:feature-voice:domain"))
     implementation(project(":feature:feature-voice:presentation"))
     implementation(project(":feature:feature-voice:data"))
+
+    implementation(project(":feature:feature-history:presentation"))
+    
     implementation(project(":util"))
     implementation(project(":core:core-data"))
     implementation(project(":core:core-domain"))

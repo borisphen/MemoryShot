@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.borisphen.memoryshot"
+    namespace = "com.borisphen.memoryshot.voice.presentation"
     compileSdk = 35
 
     defaultConfig {

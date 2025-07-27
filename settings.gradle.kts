@@ -1,12 +1,8 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -20,7 +16,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Memory Shot"
+includeBuild("build-logic")
+
+rootProject.name = "MemoryShot"
 include(":app")
 include(":feature:feature-voice:presentation")
 include(":feature:feature-voice:domain")
@@ -29,4 +27,5 @@ include(":util")
 include(":core:core-data")
 include(":core:core-domain")
 include(":core:core-ui")
+include(":feature:feature-history:presentation")
  

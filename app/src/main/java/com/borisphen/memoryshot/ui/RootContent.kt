@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.borisphen.core.ui.theme.InterviewAssistantTheme
+import com.borisphen.core.ui.theme.MemoryShotTheme
 import com.borisphen.memoryshot.MainViewModel
 import com.borisphen.memoryshot.di.AppComponent
 import kotlinx.coroutines.flow.collectLatest
@@ -52,7 +52,7 @@ fun RootContent(component: AppComponent) {
         viewModel.onViewEvent(it)
     }
 
-    InterviewAssistantTheme {
+    MemoryShotTheme {
         Content(state = state, onEvent = onUiEvent)
     }
 }
