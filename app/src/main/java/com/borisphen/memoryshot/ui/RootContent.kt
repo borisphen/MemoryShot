@@ -10,8 +10,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import com.borisphen.core.ui.theme.MemoryShotTheme
 import com.borisphen.memoryshot.MainViewModel
 import com.borisphen.memoryshot.di.AppComponent
+import com.borisphen.memoryshot.history.presentation.content.LocalHistoryDependencies
+import com.borisphen.memoryshot.history.presentation.di.HistoryDependencies
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -52,8 +56,11 @@ fun RootContent(component: AppComponent) {
         viewModel.onViewEvent(it)
     }
 
-    MemoryShotTheme {
-        Content(state = state, onEvent = onUiEvent)
+    DependenciesProvider(component) {
+
+        MemoryShotTheme {
+            Content(state = state, onEvent = onUiEvent)
+        }
     }
 }
 
@@ -89,6 +96,16 @@ fun MyButton(isServiceRunning: Boolean, onClick: () -> Unit) {
                 color = Color.White
             )
         }
+    }
+}
+
+@Composable
+private fun DependenciesProvider(
+    historyDependencies: HistoryDependencies,
+    content: @Composable () -> Unit
+) {
+    CompositionLocalProvider(LocalHistoryDependencies provides historyDependencies) {
+        content()
     }
 }
 

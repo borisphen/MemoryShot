@@ -1,6 +1,7 @@
 package com.borisphen.memoryshot.history.presentation.di
 
 import com.borisphen.core.domain.ai.ProcessAiUseCase
+import com.borisphen.memoryshot.history.presentation.HistoryViewModel
 import dagger.Component
 
 @Component(
@@ -9,9 +10,7 @@ import dagger.Component
 )
 interface HistoryComponent {
 
-    val useCase: ProcessAiUseCase
-
-//    val viewModelFactory: HistoryViewModel.Factory
+    val viewModelFactory: HistoryViewModel.Factory
 
     @Component.Factory
     interface Factory {

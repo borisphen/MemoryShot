@@ -1,6 +1,7 @@
 package com.borisphen.memoryshot.history.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.borisphen.core.domain.ai.ProcessAiUseCase
 import com.borisphen.core.domain.note.DeleteNoteUseCase
@@ -15,9 +16,14 @@ class HistoryViewModel @Inject constructor(
     private val deleteNoteUseCase: DeleteNoteUseCase
 ) : ViewModel() {
 
-    interface Factory {
-
-        fun create(useCase: ProcessAiUseCase): HistoryViewModel
+    class Factory @Inject constructor(
+        private val getAllNotesUseCase: GetMemoryNotesUseCase,
+        private val deleteNoteUseCase: DeleteNoteUseCase
+    ) {
+        fun create(): HistoryViewModel = HistoryViewModel(
+            getAllNotesUseCase,
+            deleteNoteUseCase
+        )
     }
 
     val notes = getAllNotesUseCase()

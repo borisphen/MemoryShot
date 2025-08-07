@@ -28,4 +28,4 @@ include(":core:core-data")
 include(":core:core-domain")
 include(":core:core-ui")
 include(":feature:feature-history:presentation")
- 
+include(":util-ui")

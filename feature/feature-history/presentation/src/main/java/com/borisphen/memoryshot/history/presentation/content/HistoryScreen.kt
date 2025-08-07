@@ -23,18 +23,33 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.borisphen.memoryshot.history.presentation.HistoryViewModel
+import com.borisphen.memoryshot.history.presentation.di.HistoryComponent
+import com.borisphen.memoryshot.history.presentation.di.HistoryDependencies
 import com.borisphen.memoryshot.history.presentation.model.MemoryNoteState
+import com.borisphen.memoryshot.util.ui.composeViewModel
+
+val LocalHistoryDependencies =
+    compositionLocalOf<HistoryDependencies> { error("No depencencies found!") }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
-    viewModel: HistoryViewModel,
     onBackClick: () -> Unit
 ) {
+
+    val historyDependencies = LocalHistoryDependencies.current
+    val component = remember { HistoryComponent.factory().create(historyDependencies) }
+    val viewModel: HistoryViewModel =
+        composeViewModel { component.viewModelFactory.create() }
+
     val notes by viewModel.notes.collectAsState()
 
     Scaffold(

@@ -30,11 +30,5 @@ interface DataModule {
         fun provideUseCase(repository: AiRepository): ProcessAiUseCase {
             return ProcessAiUseCase(repository)
         }
-
-        @Provides
-        @Singleton
-        fun provideMemoryNoteMapper(moshi: Moshi): MemoryNoteMapper {
-            return MemoryNoteMapper(moshi)
-        }
     }
 }
