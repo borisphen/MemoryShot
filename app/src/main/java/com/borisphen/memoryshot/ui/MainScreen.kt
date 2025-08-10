@@ -10,10 +10,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,15 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.borisphen.core.ui.theme.MemoryShotTheme
 import com.borisphen.memoryshot.MainViewModel
 import com.borisphen.memoryshot.di.AppComponent
-import com.borisphen.memoryshot.history.presentation.content.LocalHistoryDependencies
-import com.borisphen.memoryshot.history.presentation.di.HistoryDependencies
 import kotlinx.coroutines.flow.collectLatest
 
+@Suppress("FunctionNaming")
 @Composable
-fun RootContent(component: AppComponent) {
+fun MainScreen(component: AppComponent, modifier: Modifier) {
 
     val viewModel: MainViewModel =
         remember { component.viewModelFactory.create(component.useCase) }
@@ -56,26 +52,24 @@ fun RootContent(component: AppComponent) {
         viewModel.onViewEvent(it)
     }
 
-    DependenciesProvider(component) {
-
-        MemoryShotTheme {
-            Content(state = state, onEvent = onUiEvent)
-        }
-    }
+    Content(state = state, onEvent = onUiEvent, modifier = modifier)
 }
 
+@Suppress("FunctionNaming")
 @Composable
 private fun Content(
     state: AppState,
-    onEvent: (UiEvent) -> Unit
+    onEvent: (UiEvent) -> Unit,
+    modifier: Modifier,
 ) {
-    Surface(modifier = Modifier.fillMaxSize()) {
+    Surface(modifier = modifier.fillMaxSize()) {
         MyButton(
             isServiceRunning = state.serviceIsRunning,
             onClick = { onEvent(UiEvent.ButtonClick) })
     }
 }
 
+@Suppress("FunctionNaming")
 @Composable
 fun MyButton(isServiceRunning: Boolean, onClick: () -> Unit) {
     Box(
@@ -99,18 +93,9 @@ fun MyButton(isServiceRunning: Boolean, onClick: () -> Unit) {
     }
 }
 
-@Composable
-private fun DependenciesProvider(
-    historyDependencies: HistoryDependencies,
-    content: @Composable () -> Unit
-) {
-    CompositionLocalProvider(LocalHistoryDependencies provides historyDependencies) {
-        content()
-    }
-}
-
+@Suppress("FunctionNaming")
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    Content(AppState(), {})
+    Content(AppState(), {}, modifier = Modifier)
 }

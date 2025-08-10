@@ -7,7 +7,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
-    alias(libs.plugins.kotlin.kapt)
+//    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 // Чтение ключей
@@ -33,7 +34,6 @@ kotlin {
 
 android {
     namespace = "com.borisphen.memoryshot"
-    compileSdk = 35
 
 //    defaultConfig {
 //        applicationId = "com.borisphen.memoryshot"
@@ -91,13 +91,20 @@ dependencies {
     implementation(libs.material3)
 
     implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+//    kapt(libs.dagger.compiler)
     ksp(libs.moshi.kotlin.codegen)
 
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     implementation(libs.converter.moshi)
-//    ksp(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
+
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+
+    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

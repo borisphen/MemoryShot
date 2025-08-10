@@ -13,11 +13,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         pluginManager.apply("org.jetbrains.kotlin.android")
 
         extensions.configure<ApplicationExtension> {
-            compileSdk = 34
+            compileSdk = 36
 
             defaultConfig {
                 minSdk = 26
-                targetSdk = 34
+                targetSdk = 36
 
                 versionCode = 1
                 versionName = "1.0"
