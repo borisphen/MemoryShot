@@ -4,12 +4,14 @@ import com.borisphen.core.domain.note.DeleteNoteUseCase
 import com.borisphen.core.domain.note.GetMemoryNotesUseCase
 import com.borisphen.core.domain.note.MemoryNoteRepository
 import com.borisphen.core.domain.note.SaveMemoryNoteUseCase
+import com.borisphen.memoryshot.history.presentation.mapper.MemoryNoteUiMapper
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 
 @Module
-interface HistoryModule {
+internal interface HistoryModule {
 
     companion object {
         @[Provides Reusable]
@@ -23,5 +25,8 @@ interface HistoryModule {
         @[Provides Reusable]
         fun provideSaveMemoryNoteUseCase(repository: MemoryNoteRepository): SaveMemoryNoteUseCase =
             SaveMemoryNoteUseCase(repository)
+
+        @[Provides Reusable]
+        fun provideUiMapper(): MemoryNoteUiMapper = MemoryNoteUiMapper()
     }
 }

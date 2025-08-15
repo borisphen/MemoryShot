@@ -73,6 +73,7 @@ dependencies {
     implementation(project(":feature:feature-history:presentation"))
     
     implementation(project(":util"))
+    implementation(project(":util-ui"))
     implementation(project(":core:core-data"))
     implementation(project(":core:core-domain"))
     implementation(project(":core:core-ui"))

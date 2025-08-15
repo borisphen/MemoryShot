@@ -8,7 +8,7 @@ import dagger.Component
     dependencies = [HistoryDependencies::class],
     modules = [HistoryModule::class]
 )
-interface HistoryComponent {
+internal interface HistoryComponent {
 
     val viewModelFactory: HistoryViewModel.Factory
 

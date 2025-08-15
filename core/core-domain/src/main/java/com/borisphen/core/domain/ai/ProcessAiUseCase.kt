@@ -5,8 +5,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class ProcessAiUseCase(private val repository: AiRepository) {
-    suspend operator fun invoke(question: String): Either<Throwable, AiResult> =
+    suspend operator fun invoke(question: String, prompt: Prompt): Either<Throwable, AiResult> =
         withContext(Dispatchers.IO) {
-            repository.processQuestion(question)
+            repository.processQuestion(question, prompt)
         }
 }

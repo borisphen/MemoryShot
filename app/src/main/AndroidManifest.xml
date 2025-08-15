@@ -9,6 +9,11 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
 
+    <!-- For Android 12+ -->
+    <uses-permission android:name="android.permission.CAPTURE_VIDEO_OUTPUT"
+        android:minSdkVersion="31"
+        tools:ignore="ProtectedPermissions" />
+
     <application
         android:name=".MemoryApplication"
         android:allowBackup="true"
@@ -35,7 +40,7 @@
         <service
             android:name=".service.ForegroundMemoryShotService"
             android:exported="false"
-            android:foregroundServiceType="mediaProjection|microphone" />
+            android:foregroundServiceType="microphone" />
     </application>
 
 </manifest>

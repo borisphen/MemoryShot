@@ -26,12 +26,14 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.borisphen.memoryshot.history.presentation.HistoryViewModel
+import com.borisphen.memoryshot.history.presentation.di.DaggerHistoryComponent
 import com.borisphen.memoryshot.history.presentation.di.HistoryComponent
 import com.borisphen.memoryshot.history.presentation.di.HistoryDependencies
 import com.borisphen.memoryshot.history.presentation.model.MemoryNoteState
@@ -40,17 +42,27 @@ import com.borisphen.memoryshot.util.ui.composeViewModel
 val LocalHistoryDependencies =
     compositionLocalOf<HistoryDependencies> { error("No depencencies found!") }
 
+fun historyScreen(
+    dependencies: HistoryDependencies,
+    onBackClick: () -> Unit
+): @Composable () -> Unit {
+    return {
+        val component = remember {
+            DaggerHistoryComponent.factory().create(dependencies)
+        }
+        val viewModel: HistoryViewModel = composeViewModel {
+            component.viewModelFactory.create()
+        }
+        HistoryScreen(viewModel, onBackClick)
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(
+internal fun HistoryScreen(
+    viewModel: HistoryViewModel,
     onBackClick: () -> Unit
 ) {
-
-    val historyDependencies = LocalHistoryDependencies.current
-    val component = remember { HistoryComponent.factory().create(historyDependencies) }
-    val viewModel: HistoryViewModel =
-        composeViewModel { component.viewModelFactory.create() }
-
     val notes by viewModel.notes.collectAsState()
 
     Scaffold(
@@ -66,8 +78,8 @@ fun HistoryScreen(
         }
     ) { padding ->
         LazyColumn(contentPadding = padding) {
-            items(notes) { note ->
-
+            items(notes, key = { it.id }) { note ->
+                MemoryNoteItem(note = note) { }
             }
         }
     }

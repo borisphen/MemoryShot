@@ -6,5 +6,7 @@ data class MemoryNote(
     val summary: String,
     val tags: List<String>,
     val originalText: String,
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
+    val ocrText: String? = null,
+    val screenshotPath: String? = null
 )

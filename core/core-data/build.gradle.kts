@@ -18,6 +18,7 @@ room {
 dependencies {
 
     implementation(project(":util"))
+    implementation(project(":util-ui"))
     implementation(project(":core:core-domain"))
     implementation(libs.kotlinx.coroutines.core)
 

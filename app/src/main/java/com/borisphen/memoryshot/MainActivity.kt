@@ -2,6 +2,7 @@ package com.borisphen.memoryshot
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -29,8 +30,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.borisphen.core.ui.setEdgeToEdgeConfig
 import com.borisphen.core.ui.theme.MemoryShotTheme
-import com.borisphen.memoryshot.history.presentation.content.HistoryDependenciesProvider
-import com.borisphen.memoryshot.history.presentation.content.HistoryScreen
+import com.borisphen.memoryshot.history.presentation.content.historyScreen
 import com.borisphen.memoryshot.ui.MainScreen
 import kotlinx.serialization.Serializable
 
@@ -46,7 +46,8 @@ private data object ScreenC : NavKey
 class MainActivity : ComponentActivity() {
 
     private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val isGranted = permissions.all { it.value }
             if (isGranted) {
 //                startInterviewService()
             } else {
@@ -77,10 +78,8 @@ class MainActivity : ComponentActivity() {
                             MainScreen { backStack.add(ScreenB) }
                         }
                         entry<ScreenB> {
-                            HistoryDependenciesProvider(MemoryApplication.appComponent) {
-                                HistoryScreen {
-                                    backStack.removeLastOrNull()
-                                }
+                            historyScreen(MemoryApplication.appComponent) {
+                                backStack.removeLastOrNull()
                             }
                         }
                     },
@@ -107,23 +106,33 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun checkAndRequestPermission() {
-        val permission = Manifest.permission.RECORD_AUDIO
-        when {
-            ContextCompat.checkSelfPermission(
+        val permissions = mutableListOf<String>()
+
+        // Для записи звука
+        if (ContextCompat.checkSelfPermission(
                 this,
-                permission
-            ) == PackageManager.PERMISSION_GRANTED -> {
-//                startInterviewService()
-            }
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissions.add(Manifest.permission.RECORD_AUDIO)
+        }
 
-            shouldShowRequestPermissionRationale(permission) -> {
-                // Здесь можно показать объяснение (optional)
-                requestPermissionLauncher.launch(permission)
+        // Для mediaProjection FGS
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                permissions.add(Manifest.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION)
             }
+        }
 
-            else -> {
-                requestPermissionLauncher.launch(permission)
-            }
+        if (permissions.isEmpty()) {
+            // Все разрешения есть — запускаем сервис
+
+        } else {
+            requestPermissionLauncher.launch(permissions.toTypedArray())
         }
     }
 }
