@@ -5,53 +5,67 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
-import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.PixelFormat
 import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
 import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
-import android.os.Build
 import android.os.Handler
+import android.os.HandlerThread
 import android.os.IBinder
-import android.os.Looper
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.borisphen.core.domain.ai.ProcessAiUseCase
-import com.borisphen.core.domain.ai.Prompt
-import com.borisphen.core.domain.note.SaveMemoryNoteUseCase
-import com.borisphen.core.domain.note.model.MemoryNote
+import com.borisphen.core.data.sharedpreferences.PreferenceStorageImpl.Companion.KEY_RESULT_CODE
+import com.borisphen.core.domain.ai.CreateNoteWithContextUseCase
+import com.borisphen.core.domain.ocr.OcrEngine
+import com.borisphen.core.domain.screenshot.SaveScreenshotUseCase
 import com.borisphen.core.domain.speech.RecognizerEngine
-import com.borisphen.core.domain.tags.GenerateTagsUseCase
 import com.borisphen.memoryshot.MemoryApplication
-import com.borisphen.memoryshot.util.ui.BitmapUtils
+import com.borisphen.memoryshot.util.platform.BitmapUtils
+import com.borisphen.memoryshot.util.platform.BitmapUtils.toImageData
+import com.borisphen.memoryshot.util.platform.ScreenshotSaver
+import com.borisphen.memoryshot.util.ui.getScreenBounds
+import com.borisphen.util.getOrElse
+import com.borisphen.util.right
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
+import javax.inject.Named
 
 class ForegroundMemoryShotService : Service() {
 
     @Inject
-    lateinit var useCase: ProcessAiUseCase
+    lateinit var createNoteWithContextUseCase: CreateNoteWithContextUseCase
 
     @Inject
-    lateinit var generateTagsUseCase: GenerateTagsUseCase
+    lateinit var saveScreenshotUseCase: SaveScreenshotUseCase
 
     @Inject
     lateinit var recognizer: RecognizerEngine
 
     @Inject
-    lateinit var saveMemoryNoteUseCase: SaveMemoryNoteUseCase
+    @Named("Tess")
+    lateinit var ocrEngine: OcrEngine
 
     private var mediaProjection: MediaProjection? = null
     private var virtualDisplay: VirtualDisplay? = null
     private var imageReader: ImageReader? = null
+
+    // Поток для ImageReader
+    private var imageThread: HandlerThread? = null
+    private var imageHandler: Handler? = null
+
+    // Канал для последнего кадра (конфлуэнтный — держит только самый свежий)
+    private val frameChannel = Channel<Bitmap>(capacity = 1)
 
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.Main + serviceJob)
@@ -59,24 +73,24 @@ class ForegroundMemoryShotService : Service() {
     override fun onCreate() {
         super.onCreate()
         MemoryApplication.appComponent.inject(this)
-        recognizer.setCallback { text ->
-            Log.d("ForegroundMemoryShotService", "Вопрос: $text")
+        recognizer.setCallback { voiceText ->
+            Log.d("ForegroundMemoryShotService", "Вопрос: $voiceText")
             serviceScope.launch {
-                useCase(text, Prompt.QUESTION_ANALYZER).fold(
-                    ifRight = { answer ->
-                        Log.d("ForegroundMemoryShotService", "Ответ: ${answer.answer}")
-                        saveMemoryNoteUseCase(
-                            MemoryNote(
-                                title = "Голосовая заметка",
-                                summary = answer.answer,
-                                tags = listOf("интервью", "speech"),
-                                originalText = text
-                            )
-                        )
-                    },
-                    ifLeft = {
-                        Log.e("ForegroundMemoryShotService", "Ошибка обработки AI: $it")
+                val bitmap = captureOneFrameOrNull()
+                val ocrText = bitmap.takeIf { bitmap != null }?.let {
+                    withContext(Dispatchers.Default) {
+                        ocrEngine.process(it.toImageData())
                     }
+                }
+                Log.d("ForegroundMemoryShotService", "OCR Text: $ocrText")
+                val screenshotPath =
+                    bitmap?.let { saveScreenshotUseCase.saveExternal(it.toImageData()) }
+
+
+                createNoteWithContextUseCase(
+                    voiceText = voiceText,
+                    ocrText = ocrText,
+                    screenshotPath = screenshotPath
                 )
                 delay(200)
                 recognizer.start()
@@ -87,14 +101,15 @@ class ForegroundMemoryShotService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val resultCode =
-            intent?.getIntExtra("resultCode", Activity.RESULT_CANCELED) ?: return START_NOT_STICKY
-        val data = intent.getParcelableExtra<Intent>("data") ?: return START_NOT_STICKY
+            intent?.getIntExtra(KEY_RESULT_CODE, Activity.RESULT_CANCELED)
+                ?: return START_NOT_STICKY
+//        val data = intent.getParcelableExtra<Intent>(KEY_DATA_INTENT) ?: return START_NOT_STICKY
 
         val projectionManager =
-            getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
-        mediaProjection = projectionManager.getMediaProjection(resultCode, data)
+            getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+        mediaProjection = projectionManager.getMediaProjection(resultCode, dataIntent)
 
-        startScreenCapture()
+        initScreenCapture()
         recognizer.start()
 
         return START_STICKY
@@ -115,49 +130,62 @@ class ForegroundMemoryShotService : Service() {
             .setSmallIcon(android.R.drawable.ic_btn_speak_now)
             .build()
         startForeground(1, notification)
-        recognizer.start()
     }
 
-    private fun startScreenCapture() {
-        val handler = Handler(Looper.getMainLooper())
-        val metrics = resources.displayMetrics
-        imageReader = ImageReader.newInstance(
-            metrics.widthPixels,
-            metrics.heightPixels,
-            PixelFormat.RGBA_8888,
-            2
-        )
+    private fun initScreenCapture() {
+        // 1) Метрики экрана
+        val bounds = getScreenBounds()
+        val width = bounds.width()
+        val height = bounds.height()
+        val densityDpi = resources.displayMetrics.densityDpi
 
+        // 2) Поток под ImageReader
+        imageThread = HandlerThread("ScreenImageReader").apply { start() }
+        imageHandler = Handler(imageThread!!.looper)
+
+        // 3) ImageReader + постоянный слушатель (вешаем ДО createVirtualDisplay)
+        imageReader = ImageReader.newInstance(
+            width,
+            height,
+            PixelFormat.RGBA_8888,
+            /* maxImages = */ 3
+        ).also { reader ->
+            reader.setOnImageAvailableListener({ r ->
+                try {
+                    val img = r.acquireLatestImage() ?: return@setOnImageAvailableListener
+                    val bmp = BitmapUtils.imageToBitmap(img)
+                    img.close()
+                    // Кладём свежий кадр, если канал не успел принять предыдущий — заменяем
+                    frameChannel.trySend(bmp)
+                } catch (t: Throwable) {
+                    Log.e("ForegroundMemoryShotService", "Image error", t)
+                }
+            }, imageHandler)
+        }
+
+        // 4) VirtualDisplay
         virtualDisplay = mediaProjection?.createVirtualDisplay(
             "ScreenCapture",
-            metrics.widthPixels,
-            metrics.heightPixels,
-            metrics.densityDpi,
+            width,
+            height,
+            densityDpi,
             DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-            imageReader?.surface,
+            imageReader!!.surface,
             null,
             null
         )
 
-        imageReader?.setOnImageAvailableListener({ reader ->
-            val image = reader.acquireLatestImage() ?: return@setOnImageAvailableListener
-            val bitmap = BitmapUtils.imageToBitmap(image)
-            image.close()
-
-            serviceScope.launch {
-                val question = recognizer.getLastRecognizedText()
-                val tags = generateTagsUseCase(question) // из domain
-                saveMemoryNoteUseCase(
-                    MemoryNote(
-                        title = "Вопрос",
-                        summary = question.take(100),
-                        tags = tags,
-                        originalText = question
-                    )
-                )
-            }
-        }, handler)
+        Log.d(
+            "ForegroundMemoryShotService",
+            "VD created: ${virtualDisplay != null} ${width}x$height/$densityDpi"
+        )
     }
+
+    private suspend fun captureOneFrameOrNull(timeoutMs: Long = 3000L): Bitmap? =
+        withTimeoutOrNull(timeoutMs) {
+            // ждём ближайший свежий кадр
+            frameChannel.receive()
+        }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -166,7 +194,19 @@ class ForegroundMemoryShotService : Service() {
         imageReader?.close()
         mediaProjection?.stop()
         serviceJob.cancel()
+
+        imageReader = null
+        virtualDisplay = null
+        mediaProjection = null
+
+        imageThread?.quitSafely()
+        imageThread = null
+        imageHandler = null
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
+
+    companion object {
+        lateinit var dataIntent: Intent
+    }
 }

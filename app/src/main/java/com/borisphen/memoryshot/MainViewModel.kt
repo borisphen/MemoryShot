@@ -1,9 +1,12 @@
 package com.borisphen.memoryshot
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.borisphen.core.domain.ai.ProcessAiUseCase
+import com.borisphen.core.data.sharedpreferences.PreferenceStorageImpl.Companion.KEY_DATA_INTENT
+import com.borisphen.core.data.sharedpreferences.PreferenceStorageImpl.Companion.KEY_RESULT_CODE
 import com.borisphen.core.domain.service.ServiceController
+import com.borisphen.core.domain.sharedpreferences.PreferenceStorage
 import com.borisphen.memoryshot.ui.AppState
 import com.borisphen.memoryshot.ui.SideEffect
 import com.borisphen.memoryshot.ui.SideEffect.StartService
@@ -14,6 +17,7 @@ import com.borisphen.util.mutableSharedFlow
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,14 +31,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel @AssistedInject constructor(
-    @Assisted private val useCase: ProcessAiUseCase,
+    @Assisted
     private val serviceController: ServiceController,
+    private val preferenceStorage: PreferenceStorage
 ) : ViewModel() {
 
     @AssistedFactory
     interface Factory {
 
-        fun create(useCase: ProcessAiUseCase): MainViewModel
+        fun create(serviceController: ServiceController): MainViewModel
     }
 
     private val _answerFlow = MutableSharedFlow<String>()
@@ -52,22 +57,16 @@ class MainViewModel @AssistedInject constructor(
         observeEvents()
     }
 
+    fun storeProjectionData(resultCode: Int, intent: Intent) {
+        viewModelScope.launch {
+            preferenceStorage.putValue(KEY_RESULT_CODE, resultCode.toString())
+            preferenceStorage.putValue(KEY_DATA_INTENT, intent.toUri(0).toString())
+        }
+    }
+
     private fun observeEvents() {
         viewEventsFlow.onEach(::handleViewEvent)
             .launchIn(viewModelScope)
-    }
-
-    fun processSpeechInput(text: String) {
-        viewModelScope.launch {
-            useCase(text).fold(
-                ifLeft = {
-
-                },
-                ifRight = {
-                    _answerFlow.emit(it.answer)
-                }
-            )
-        }
     }
 
     fun onViewEvent(event: UiEvent) {
@@ -101,7 +100,14 @@ class MainViewModel @AssistedInject constructor(
     }
 
     fun startService() {
-        serviceController.startInterviewService()
+        viewModelScope.launch(Dispatchers.Main) {
+            val resultCode = preferenceStorage.getValue(KEY_RESULT_CODE).toInt()
+            val data = preferenceStorage.getValue(KEY_DATA_INTENT)
+            serviceController.startInterviewService(
+                resultCode = resultCode,
+                data = data
+            )
+        }
     }
 
     fun stopService() {

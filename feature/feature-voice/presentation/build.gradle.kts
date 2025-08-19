@@ -15,7 +15,7 @@ android {
 dependencies {
 
     implementation(project(":feature:feature-voice:domain"))
-    implementation(project(":util"))
+    implementation(project(":utils:util"))
     implementation(project(":core:core-ui"))
     implementation(project(":core:core-domain"))
 

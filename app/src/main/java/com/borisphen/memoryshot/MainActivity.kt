@@ -1,7 +1,9 @@
 package com.borisphen.memoryshot
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -31,7 +33,9 @@ import androidx.navigation3.ui.NavDisplay
 import com.borisphen.core.ui.setEdgeToEdgeConfig
 import com.borisphen.core.ui.theme.MemoryShotTheme
 import com.borisphen.memoryshot.history.presentation.content.historyScreen
+import com.borisphen.memoryshot.service.ForegroundMemoryShotService
 import com.borisphen.memoryshot.ui.MainScreen
+import com.borisphen.memoryshot.util.ui.activityViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -45,6 +49,12 @@ private data object ScreenC : NavKey
 
 class MainActivity : ComponentActivity() {
 
+    private lateinit var projectionManager: MediaProjectionManager
+
+    private val viewModel by activityViewModel {
+        MemoryApplication.appComponent.viewModelFactory.create(MemoryApplication.appComponent.serviceController)
+    }
+
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             val isGranted = permissions.all { it.value }
@@ -55,6 +65,19 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+    private val projectionLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                val resultCode = result.resultCode
+                val data = result.data!!
+                viewModel.storeProjectionData(resultCode = resultCode, intent = data)
+                ForegroundMemoryShotService.dataIntent = data
+                Toast.makeText(this, "Разрешение получено", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Screen capture denied", Toast.LENGTH_LONG).show()
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setEdgeToEdgeConfig()
@@ -62,6 +85,9 @@ class MainActivity : ComponentActivity() {
 
 //        val dependencies = MemoryApplication.appComponent
 //        val component: AiComponent = AiComponent.factory().create(dependencies)
+
+        projectionManager =
+            getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
         setContent {
 
@@ -129,11 +155,15 @@ class MainActivity : ComponentActivity() {
         }
 
         if (permissions.isEmpty()) {
-            // Все разрешения есть — запускаем сервис
-
+            startProjectionRequest()
         } else {
             requestPermissionLauncher.launch(permissions.toTypedArray())
         }
+    }
+
+    private fun startProjectionRequest() {
+        val intent = projectionManager.createScreenCaptureIntent()
+        projectionLauncher.launch(intent)
     }
 }
 

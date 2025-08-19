@@ -72,8 +72,9 @@ dependencies {
 
     implementation(project(":feature:feature-history:presentation"))
     
-    implementation(project(":util"))
-    implementation(project(":util-ui"))
+    implementation(project(":utils:util"))
+    implementation(project(":utils:util-ui"))
+    implementation(project(":utils:util-platform"))
     implementation(project(":core:core-data"))
     implementation(project(":core:core-domain"))
     implementation(project(":core:core-ui"))
@@ -92,7 +93,6 @@ dependencies {
     implementation(libs.material3)
 
     implementation(libs.dagger)
-//    kapt(libs.dagger.compiler)
     ksp(libs.moshi.kotlin.codegen)
 
     implementation(libs.moshi)
@@ -106,6 +106,8 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.core)
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.preference)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

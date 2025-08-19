@@ -1,5 +1,7 @@
 [versions]
 agp = "8.10.0"
+firebaseBom = "34.1.0"
+languageId = "17.0.6"
 vosk = "0.3.32"
 dagger = "2.50"
 coreKtx = "1.10.1"
@@ -30,20 +32,27 @@ kotlinxSerializationCore = "1.8.1"
 ksp = "2.0.21-1.0.25"
 room = "2.6.1"
 
-navigation3 = "1.0.0-alpha06"
+navigation3 = "1.0.0-alpha07"
 lifecycleViewmodel = "1.0.0-SNAPSHOT"
 
-compileSdk = "34"
+compileSdk = "36"
 minSdk = "26"
-targetSdk = "34"
+targetSdk = "36"
+
+textRecognition = "16.0.0"
+preference = "1.2.1"
+tess = "9.1.0"
+languageIdCommon = "16.1.0"
 
 [libraries]
 # Plugins for composite build
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 gradleplugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 gradleplugin-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "activityCompose" }
 gradleplugin-composeCompiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "activityCompose" }
 gradleplugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
+language-id = { module = "com.google.mlkit:language-id", version.ref = "languageId" }
 vosk = { module = "org.vosk:android", version.ref = "vosk" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
@@ -90,6 +99,12 @@ androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", vers
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }
 
+text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "textRecognition" }
+tess-text-recognition = { module = "com.rmtheis:tess-two", version.ref = "tess" }
+
+preference = { module = "androidx.preference:preference", version.ref = "preference" }
+language-id-common = { group = "com.google.mlkit", name = "language-id-common", version.ref = "languageIdCommon" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -100,6 +115,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 room = { id = "androidx.room", version.ref = "room" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization"}
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
 
 

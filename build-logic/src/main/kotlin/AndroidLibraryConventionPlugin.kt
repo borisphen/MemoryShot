@@ -20,11 +20,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             // Use extensions.configure<LibraryExtension> instead of direct android { ... }
             extensions.configure<LibraryExtension> {
                 // Use versions from libs.versions.toml for consistency
-                compileSdk = 34
+                compileSdk = 36
 
                 defaultConfig {
                     minSdk = 26
-                    testOptions.targetSdk = 34
+                    testOptions.targetSdk = 36
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     consumerProguardFiles("consumer-rules.pro")
                 }
@@ -40,6 +40,10 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                     debug { // It's good practice to have a debug type, even for libraries.
                         isMinifyEnabled = false
                     }
+                }
+
+                buildFeatures {
+                    buildConfig = true
                 }
 
                 // Set Java compatibility to Java 17 (or your chosen version)

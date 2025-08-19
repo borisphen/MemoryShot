@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun MainScreen(component: AppComponent, modifier: Modifier) {
 
     val viewModel: MainViewModel =
-        remember { component.viewModelFactory.create(component.useCase) }
+        remember { component.viewModelFactory.create(component.serviceController) }
 
     val state by viewModel.uiState.collectAsState()
 

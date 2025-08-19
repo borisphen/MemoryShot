@@ -2,7 +2,6 @@ package com.borisphen.memoryshot.history.presentation.mapper
 
 import com.borisphen.core.domain.note.model.MemoryNote
 import com.borisphen.memoryshot.history.presentation.model.MemoryNoteState
-import com.squareup.moshi.Moshi
 
 internal class MemoryNoteUiMapper {
 

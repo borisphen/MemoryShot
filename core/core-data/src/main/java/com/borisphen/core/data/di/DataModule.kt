@@ -1,14 +1,16 @@
 package com.borisphen.core.data.di
 
+import android.content.Context
 import com.borisphen.core.data.AiRepositoryImpl
-import com.borisphen.core.data.mapper.MemoryNoteMapper
 import com.borisphen.core.data.network.service.GroqApiService
+import com.borisphen.core.data.ocr.OcrEngineImpl
+import com.borisphen.core.data.ocr.TessOcrEngineImpl
 import com.borisphen.core.domain.ai.AiRepository
-import com.borisphen.core.domain.ai.ProcessAiUseCase
-import com.squareup.moshi.Moshi
+import com.borisphen.core.domain.ocr.OcrEngine
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -27,8 +29,12 @@ interface DataModule {
 
         @Provides
         @Singleton
-        fun provideUseCase(repository: AiRepository): ProcessAiUseCase {
-            return ProcessAiUseCase(repository)
-        }
+        @Named("TextRecognition")
+        fun provideOcrEngine(): OcrEngine = OcrEngineImpl()
+
+        @Provides
+        @Singleton
+        @Named("Tess")
+        fun provideTessOcrEngine(context: Context): OcrEngine = TessOcrEngineImpl(context = context)
     }
 }

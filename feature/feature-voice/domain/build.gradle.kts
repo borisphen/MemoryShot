@@ -12,6 +12,6 @@ kotlin {
     }
 }
 dependencies {
-    implementation(project(":util"))
+    implementation(project(":utils:util"))
     implementation(libs.kotlinx.coroutines.core)
 }

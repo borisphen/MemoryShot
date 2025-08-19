@@ -17,6 +17,8 @@ class AndroidSpeechRecognizerWrapper @Inject constructor(
     private val context: Context
 ) : RecognizerEngine, RecognitionListener {
 
+    private var lastRecognizedText: String = ""
+
     private var recognizer: SpeechRecognizer? = null
     private var callback: (String) -> Unit = {}
 
@@ -67,6 +69,8 @@ class AndroidSpeechRecognizerWrapper @Inject constructor(
             start()
         }
     }
+
+    override fun getLastRecognizedText(): String = lastRecognizedText
 
     override fun onReadyForSpeech(params: Bundle?) {}
     override fun onBeginningOfSpeech() {}

@@ -5,7 +5,7 @@ import com.borisphen.core.data.di.DataModule
 import com.borisphen.core.data.di.NoteDataModule
 import com.borisphen.core.data.di.SpeechModule
 import com.borisphen.core.data.network.di.NetworkModule
-import com.borisphen.core.domain.ai.ProcessAiUseCase
+import com.borisphen.core.domain.service.ServiceController
 import com.borisphen.memoryshot.MainViewModel
 import com.borisphen.memoryshot.history.presentation.di.HistoryDependencies
 import com.borisphen.memoryshot.service.ForegroundMemoryShotService
@@ -19,14 +19,13 @@ import javax.inject.Singleton
         SpeechModule::class,
         NetworkModule::class,
         NoteDataModule::class,
-//        HistoryModule::class,
         AppModule::class]
 )
 interface AppComponent : HistoryDependencies {
 
     val viewModelFactory: MainViewModel.Factory
 
-    val useCase: ProcessAiUseCase
+    val serviceController: ServiceController
 
     fun inject(service: ForegroundMemoryShotService)
 

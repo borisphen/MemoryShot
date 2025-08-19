@@ -1,10 +1,7 @@
 package com.borisphen.memoryshot.history.presentation
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.borisphen.core.data.mapper.MemoryNoteMapper
-import com.borisphen.core.domain.ai.ProcessAiUseCase
 import com.borisphen.core.domain.note.DeleteNoteUseCase
 import com.borisphen.core.domain.note.GetMemoryNotesUseCase
 import com.borisphen.memoryshot.history.presentation.mapper.MemoryNoteUiMapper
