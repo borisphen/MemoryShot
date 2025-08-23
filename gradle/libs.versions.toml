@@ -43,6 +43,7 @@ textRecognition = "16.0.0"
 preference = "1.2.1"
 tess = "9.1.0"
 languageIdCommon = "16.1.0"
+uiTooling = "1.4.0"
 
 [libraries]
 # Plugins for composite build
@@ -104,6 +105,7 @@ tess-text-recognition = { module = "com.rmtheis:tess-two", version.ref = "tess" 
 
 preference = { module = "androidx.preference:preference", version.ref = "preference" }
 language-id-common = { group = "com.google.mlkit", name = "language-id-common", version.ref = "languageIdCommon" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

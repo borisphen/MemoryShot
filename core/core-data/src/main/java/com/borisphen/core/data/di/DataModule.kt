@@ -5,6 +5,7 @@ import com.borisphen.core.data.AiRepositoryImpl
 import com.borisphen.core.data.network.service.GroqApiService
 import com.borisphen.core.data.ocr.OcrEngineImpl
 import com.borisphen.core.data.ocr.TessOcrEngineImpl
+import com.borisphen.core.data.screenshot.ScreenCaptureManager
 import com.borisphen.core.domain.ai.AiRepository
 import com.borisphen.core.domain.ocr.OcrEngine
 import dagger.Binds
@@ -36,5 +37,10 @@ interface DataModule {
         @Singleton
         @Named("Tess")
         fun provideTessOcrEngine(context: Context): OcrEngine = TessOcrEngineImpl(context = context)
+
+        @Provides
+        @Singleton
+        fun provideScreenCaptureManager(context: Context): ScreenCaptureManager =
+            ScreenCaptureManager(appContext = context)
     }
 }

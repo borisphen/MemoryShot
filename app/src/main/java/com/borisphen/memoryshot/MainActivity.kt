@@ -32,7 +32,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.borisphen.core.ui.setEdgeToEdgeConfig
 import com.borisphen.core.ui.theme.MemoryShotTheme
-import com.borisphen.memoryshot.history.presentation.content.historyScreen
+import com.borisphen.memoryshot.history.presentation.content.HistoryScreenEntry
 import com.borisphen.memoryshot.service.ForegroundMemoryShotService
 import com.borisphen.memoryshot.ui.MainScreen
 import com.borisphen.memoryshot.util.ui.activityViewModel
@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
                             MainScreen { backStack.add(ScreenB) }
                         }
                         entry<ScreenB> {
-                            historyScreen(MemoryApplication.appComponent) {
+                            HistoryScreenEntry(MemoryApplication.appComponent) {
                                 backStack.removeLastOrNull()
                             }
                         }

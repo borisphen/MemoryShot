@@ -10,6 +10,8 @@ import com.borisphen.core.domain.ai.AiRepository
 import com.borisphen.core.domain.ai.CreateNoteWithContextUseCase
 import com.borisphen.core.domain.config.ApiConfig
 import com.borisphen.core.domain.note.MemoryNoteRepository
+import com.borisphen.core.domain.ocr.OcrEngine
+import com.borisphen.core.domain.screenshot.ProcessScreenshotUseCase
 import com.borisphen.core.domain.screenshot.SaveScreenshotUseCase
 import com.borisphen.core.domain.screenshot.ScreenshotRepository
 import com.borisphen.core.domain.service.ServiceController
@@ -80,6 +82,18 @@ interface AppModule {
         @Singleton
         fun provideSaveScreenshotUseCase(screenshotRepository: ScreenshotRepository): SaveScreenshotUseCase {
             return SaveScreenshotUseCase(screenshotRepository)
+        }
+
+        @Provides
+        @Singleton
+        fun provideProcessScreenshotUseCase(
+            saveScreenshotUseCase: SaveScreenshotUseCase,
+            @Named("TextRecognition") ocrEngine: OcrEngine
+        ): ProcessScreenshotUseCase {
+            return ProcessScreenshotUseCase(
+                saveScreenshotUseCase = saveScreenshotUseCase,
+                ocrEngine = ocrEngine
+            )
         }
     }
 }

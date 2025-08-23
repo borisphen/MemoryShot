@@ -32,6 +32,7 @@ dependencies {
     implementation(libs.material3)
 
     implementation(libs.dagger)
+    debugImplementation(libs.ui.tooling)
     ksp(libs.dagger.compiler)
     ksp(libs.moshi.kotlin.codegen)
 

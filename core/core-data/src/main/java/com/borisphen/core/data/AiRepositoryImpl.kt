@@ -39,7 +39,8 @@ class AiRepositoryImpl(private val service: GroqApiService) : AiRepository {
     }
 
     companion object {
-        const val MODEL: String = "mixtral-8x7b-32768"
+//        const val MODEL: String = "mixtral-8x7b-32768"
+        const val MODEL: String = "llama-3.3-70b-versatile"
         const val TEMPERATURE: Float = 0.7f
         const val MAX_TOKENS: Int = 512
 

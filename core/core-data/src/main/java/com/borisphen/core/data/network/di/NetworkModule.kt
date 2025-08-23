@@ -53,14 +53,7 @@ class NetworkModule {
         return Retrofit.Builder()
             .baseUrl(appConfig.baseUrl)
             .client(okHttpClient)
-            .addConverterFactory(
-                MoshiConverterFactory.create(
-                    moshi
-//                    Moshi.Builder()
-//                        .add(KotlinJsonAdapterFactory())
-//                        .build()
-                )
-            )
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
 

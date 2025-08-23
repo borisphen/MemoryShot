@@ -1,6 +1,10 @@
 package com.borisphen.memoryshot.history.presentation.content
 
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,8 +31,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.borisphen.core.ui.theme.MemoryShotTheme
 import com.borisphen.memoryshot.history.presentation.HistoryViewModel
 import com.borisphen.memoryshot.history.presentation.di.DaggerHistoryComponent
 import com.borisphen.memoryshot.history.presentation.di.HistoryDependencies
@@ -38,19 +45,18 @@ import com.borisphen.memoryshot.util.ui.composeViewModel
 val LocalHistoryDependencies =
     compositionLocalOf<HistoryDependencies> { error("No depencencies found!") }
 
-fun historyScreen(
+@Composable()
+fun HistoryScreenEntry(
     dependencies: HistoryDependencies,
     onBackClick: () -> Unit
-): @Composable () -> Unit {
-    return {
-        val component = remember {
-            DaggerHistoryComponent.factory().create(dependencies)
-        }
-        val viewModel: HistoryViewModel = composeViewModel {
-            component.viewModelFactory.create()
-        }
-        HistoryScreen(viewModel, onBackClick)
+) {
+    val component = remember {
+        DaggerHistoryComponent.factory().create(dependencies)
     }
+    val viewModel: HistoryViewModel = composeViewModel {
+        component.viewModelFactory.create()
+    }
+    HistoryScreen(viewModel, onBackClick)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -81,6 +87,7 @@ internal fun HistoryScreen(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun MemoryNoteItem(
     note: MemoryNoteState,
@@ -97,20 +104,56 @@ internal fun MemoryNoteItem(
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = note.summary, style = MaterialTheme.typography.bodyMedium)
             Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                note.tags.forEach {
-                    AssistChip(
-                        onClick = {},
-                        label = { Text(it) },
-                        modifier = Modifier.padding(end = 4.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = onDelete) {
-                    Icon(Icons.Default.Delete, contentDescription = "Удалить")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                FlowRow(
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.Center,
+                    maxItemsInEachRow = Int.MAX_VALUE
+                ) {
+                    note.tags.forEach {
+                        AssistChip(
+                            onClick = {},
+                            label = { Text(it) },
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = onDelete) {
+                        Icon(Icons.Default.Delete, contentDescription = "Удалить")
+                    }
                 }
             }
         }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Memory Note Item - Light"
+)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "Memory Note Item - Dark"
+)
+@Composable
+private fun MemoryNoteItemPreview() {
+    MemoryShotTheme {
+        MemoryNoteItem(
+            note = MemoryNoteState(
+                id = 1L,
+                title = "Пример заметки",
+                summary = "Это краткое описание заметки для превью",
+                tags = listOf("Android", "Kotlin", "Compose", "Java", "Gutten Morgen"),
+                originalText = "Полный текст заметки, который хранится отдельно",
+                createdAt = System.currentTimeMillis()
+            ),
+            onDelete = {}
+        )
     }
 }
 
