@@ -1,5 +1,5 @@
 plugins {
-    id("com.borisphen.memoryshot.android.library")
+    alias(libs.plugins.memoryshot.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)

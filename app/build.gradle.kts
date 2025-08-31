@@ -1,13 +1,11 @@
 import java.util.Properties
 
 plugins {
-//    alias(libs.plugins.android.application)
-    id("com.borisphen.memoryshot.android.application")
+    alias(libs.plugins.memoryshot.android.application)
+    alias(libs.plugins.memoryshot.compose)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
-//    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
@@ -82,25 +80,17 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.foundation.layout.android)
-//    implementation("com.google.accompanist:accompanist-flowlayout:0.30.1")
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.material3)
-
     implementation(libs.dagger)
     ksp(libs.moshi.kotlin.codegen)
+    ksp(libs.dagger.compiler)
 
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     implementation(libs.converter.moshi)
-    ksp(libs.dagger.compiler)
 
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)

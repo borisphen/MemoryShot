@@ -1,5 +1,5 @@
 plugins {
-    id("com.borisphen.memoryshot.android.library")
+    alias(libs.plugins.memoryshot.android.library)
 }
 
 android {

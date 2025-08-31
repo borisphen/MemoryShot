@@ -1,3 +1,4 @@
+// build-logic/settings.gradle.kts
 pluginManagement {
     repositories {
         google()
@@ -20,4 +21,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "build-logic"
+rootProject.name = "MemoryShot"
+include(":app")
+//includeBuild("build-logic")

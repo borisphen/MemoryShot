@@ -1,4 +1,7 @@
 import com.android.build.api.dsl.ApplicationExtension
+import extensions.ANDROID_COMPILE_SDK_VERSION
+import extensions.ANDROID_MIN_SDK_VERSION
+import extensions.ANDROID_TARGET_SDK_VERSION
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,11 +16,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         pluginManager.apply("org.jetbrains.kotlin.android")
 
         extensions.configure<ApplicationExtension> {
-            compileSdk = 36
+            compileSdk = ANDROID_COMPILE_SDK_VERSION
 
             defaultConfig {
-                minSdk = 26
-                targetSdk = 36
+                minSdk = ANDROID_MIN_SDK_VERSION
+                targetSdk = ANDROID_TARGET_SDK_VERSION
 
                 versionCode = 1
                 versionName = "1.0"
@@ -35,11 +38,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 debug {
                     isMinifyEnabled = false
                 }
-            }
-
-            compileOptions {
-                sourceCompatibility = JavaVersion.VERSION_1_8
-                targetCompatibility = JavaVersion.VERSION_1_8
             }
 
             compileOptions {

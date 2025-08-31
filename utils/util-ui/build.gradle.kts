@@ -1,6 +1,6 @@
 plugins {
-    id("com.borisphen.memoryshot.android.library")
-    id("com.borisphen.memoryshot.compose")
+    alias(libs.plugins.memoryshot.android.library)
+    alias(libs.plugins.memoryshot.compose)
 }
 
 android {
@@ -13,20 +13,12 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
 
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.material3)
-
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

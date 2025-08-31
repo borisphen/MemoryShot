@@ -1,10 +1,16 @@
 // build-logic/src/main/kotlin/AndroidLibraryConventionPlugin.kt
 
 import com.android.build.api.dsl.LibraryExtension
+import extensions.ANDROID_COMPILE_SDK_VERSION
+import extensions.ANDROID_MIN_SDK_VERSION
+import extensions.ANDROID_TARGET_SDK_VERSION
+import extensions.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -20,11 +26,11 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             // Use extensions.configure<LibraryExtension> instead of direct android { ... }
             extensions.configure<LibraryExtension> {
                 // Use versions from libs.versions.toml for consistency
-                compileSdk = 36
+                compileSdk = ANDROID_COMPILE_SDK_VERSION
 
                 defaultConfig {
-                    minSdk = 26
-                    testOptions.targetSdk = 36
+                    minSdk = ANDROID_MIN_SDK_VERSION
+                    testOptions.targetSdk = ANDROID_TARGET_SDK_VERSION
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     consumerProguardFiles("consumer-rules.pro")
                 }

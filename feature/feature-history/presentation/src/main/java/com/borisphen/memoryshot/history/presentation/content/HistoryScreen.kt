@@ -109,20 +109,15 @@ internal fun MemoryNoteItem(
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = note.summary, style = MaterialTheme.typography.bodyMedium)
             Spacer(modifier = Modifier.height(8.dp))
-            MyFlowRow(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
             ) {
-/*                note.tags.forEach {
-                    CompactAssistChip(
-                        text = it,
-                        onClick = {},
-                        modifier = Modifier
-                            .padding(end = 4.dp, top = 0.dp, bottom = 0.dp)
-//                            .background(Color.Red)
-                    )
-                }*/
                 note.tags.forEach {
-                    AssistChip(onClick = {}, label = { Text(it) }, modifier = Modifier.padding(end = 12.dp))
+                    AssistChip(
+                        onClick = {},
+                        label = { Text(it) },
+                        modifier = Modifier.padding(end = 12.dp)
+                    )
                 }
                 Spacer(modifier = Modifier.fillMaxWidth(1f))
                 IconButton(onClick = onDelete) {
