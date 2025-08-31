@@ -1,6 +1,7 @@
 package com.borisphen.memoryshot.history.presentation.content
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,8 +35,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.borisphen.core.ui.components.CompactAssistChip
+import com.borisphen.core.ui.components.MyFlowRow
 import com.borisphen.core.ui.theme.MemoryShotTheme
 import com.borisphen.memoryshot.history.presentation.HistoryViewModel
 import com.borisphen.memoryshot.history.presentation.di.DaggerHistoryComponent
@@ -104,27 +109,24 @@ internal fun MemoryNoteItem(
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = note.summary, style = MaterialTheme.typography.bodyMedium)
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
+            MyFlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
             ) {
-                FlowRow(
-                    modifier = Modifier.weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalArrangement = Arrangement.Center,
-                    maxItemsInEachRow = Int.MAX_VALUE
-                ) {
-                    note.tags.forEach {
-                        AssistChip(
-                            onClick = {},
-                            label = { Text(it) },
-                            modifier = Modifier.padding(end = 4.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = onDelete) {
-                        Icon(Icons.Default.Delete, contentDescription = "Удалить")
-                    }
+/*                note.tags.forEach {
+                    CompactAssistChip(
+                        text = it,
+                        onClick = {},
+                        modifier = Modifier
+                            .padding(end = 4.dp, top = 0.dp, bottom = 0.dp)
+//                            .background(Color.Red)
+                    )
+                }*/
+                note.tags.forEach {
+                    AssistChip(onClick = {}, label = { Text(it) }, modifier = Modifier.padding(end = 12.dp))
+                }
+                Spacer(modifier = Modifier.fillMaxWidth(1f))
+                IconButton(onClick = onDelete) {
+                    Icon(Icons.Default.Delete, contentDescription = "Удалить")
                 }
             }
         }
@@ -148,7 +150,18 @@ private fun MemoryNoteItemPreview() {
                 id = 1L,
                 title = "Пример заметки",
                 summary = "Это краткое описание заметки для превью",
-                tags = listOf("Android", "Kotlin", "Compose", "Java", "Gutten Morgen"),
+                tags = listOf(
+                    "Android",
+                    "Kotlin",
+                    "Compose",
+                    "Java",
+                    "Gutten Morgen",
+                    "Android",
+                    "Kotlin",
+                    "Compose",
+                    "Java",
+                    "Gutten Morgen"
+                ),
                 originalText = "Полный текст заметки, который хранится отдельно",
                 createdAt = System.currentTimeMillis()
             ),

@@ -12,6 +12,7 @@ android {
 
 dependencies {
 
+    implementation(project(":utils:util-platform"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
