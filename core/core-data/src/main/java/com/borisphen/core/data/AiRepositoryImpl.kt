@@ -13,7 +13,10 @@ import com.borisphen.util.right
 
 class AiRepositoryImpl(private val service: GroqApiService) : AiRepository {
 
-    override suspend fun processQuestion(question: String, prompt: Prompt): Either<Throwable, AiResult> {
+    override suspend fun processQuestion(
+        question: String,
+        prompt: Prompt
+    ): Either<Throwable, AiResult> {
         val request = ChatRequest(
             model = MODEL,
             temperature = TEMPERATURE,
@@ -39,9 +42,8 @@ class AiRepositoryImpl(private val service: GroqApiService) : AiRepository {
     }
 
     companion object {
-//        const val MODEL: String = "mixtral-8x7b-32768"
         const val MODEL: String = "llama-3.3-70b-versatile"
-        const val TEMPERATURE: Float = 0.7f
+        const val TEMPERATURE: Float = 0.2f
         const val MAX_TOKENS: Int = 512
 
         private val promptMap = mapOf<Prompt, String>(
@@ -49,9 +51,22 @@ class AiRepositoryImpl(private val service: GroqApiService) : AiRepository {
             Prompt.TAG_GENERATOR to QUESTION_ANALYZER_TEXT
         )
 
-        private const val QUESTION_ANALYZER_TEXT = "Ты — помощник. Из текста заметки сгенерируй:\n" +
-        "- Заголовок\n" +
-        "- Краткое резюме\n" +
-        "- Тематические теги (до 5)"
+        private const val QUESTION_ANALYZER_TEXT =
+            "Ты — помощник. Из текста заметки сгенерируй JSON со структурой:\n" +
+                    "{\n" +
+                    "  \"title\": \"Краткий заголовок (без вводных слов)\",\n" +
+                    "  \"summary\": \"Сжатое содержание мысли в первом лице или нейтрально\",\n" +
+                    "  \"tags\": [\"тег1\", \"тег2\", \"тег3\"]\n" +
+                    "}\n\n" +
+                    "Правила:\n" +
+                    "- Возвращай только JSON без пояснений и без форматирования в ``` .\n" +
+                    "- Формулируй так, чтобы это выглядело как сжатая мысль пользователя, но без местоимений.\n" +
+                    "- Игнорируй системные строки (например: \"Stop Service\", \"DEBUG\", \"pid\", " +
+                    "время, логи и технические надписи).\n" +
+                    "- Если есть голосовая заметка — именно она главная, приоритетнее OCR-текста.\n" +
+                    "- OCR-текст учитывай только если в нём содержится полезная информация, а не мусор.\n" +
+                    "- Не добавляй аналитики и комментариев, только переформулируй мысль.\n" +
+                    "- Теги — массив строк, до 5 штук."
+
     }
 }

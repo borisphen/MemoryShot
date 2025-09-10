@@ -33,16 +33,6 @@ kotlin {
 android {
     namespace = "com.borisphen.memoryshot"
 
-//    defaultConfig {
-//        applicationId = "com.borisphen.memoryshot"
-//        minSdk = 24
-//        targetSdk = 35
-//        versionCode = 1
-//        versionName = "1.0"
-//
-//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//    }
-
     buildTypes {
         debug {
             buildConfigField("String", "GROQ_API_KEY", "\"$groqApiKey\"")

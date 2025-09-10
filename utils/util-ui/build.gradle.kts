@@ -12,7 +12,7 @@ dependencies {
     implementation(project(":core:core-domain"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+//    implementation(libs.androidx.appcompat)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.viewmodel.compose)

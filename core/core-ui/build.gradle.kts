@@ -11,7 +11,7 @@ dependencies {
 
     implementation(project(":utils:util-platform"))
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+//    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.junit)

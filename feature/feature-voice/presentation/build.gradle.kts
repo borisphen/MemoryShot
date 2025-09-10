@@ -17,7 +17,7 @@ dependencies {
     implementation(project(":core:core-domain"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+//    implementation(libs.androidx.appcompat)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import android.util.Log
 import com.borisphen.core.domain.speech.RecognizerEngine
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -57,6 +58,7 @@ class AndroidSpeechRecognizerWrapper @Inject constructor(
     override fun onResults(results: Bundle?) {
         val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
         val result = matches?.firstOrNull() ?: return
+        Log.d("AndroidSpeechRecognizerWrapper", "Распознанный текст: $result")
         mainScope.launch {
             callback(result)
         }

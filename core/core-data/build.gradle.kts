@@ -22,8 +22,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+//    implementation(libs.androidx.appcompat)
 
     api(libs.okhttp)
     api(libs.okhttp.logging)
@@ -32,6 +31,7 @@ dependencies {
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     implementation(libs.converter.moshi)
+    ksp(libs.moshi.kotlin.codegen)
 
     implementation(libs.text.recognition)
     implementation(libs.tess.text.recognition)
@@ -43,7 +43,6 @@ dependencies {
     implementation(libs.language.id.common)
 
     implementation(libs.dagger)
-    ksp(libs.moshi.kotlin.codegen)
     ksp(libs.dagger.compiler)
 
     implementation(libs.room.runtime)

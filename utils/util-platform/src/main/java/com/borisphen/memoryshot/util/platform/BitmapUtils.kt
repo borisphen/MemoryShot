@@ -11,16 +11,44 @@ import java.nio.ByteBuffer
 
 object BitmapUtils {
 
-    fun imageToBitmap(image: Image): Bitmap {
-        val plane = image.planes[0]
-        val buffer: ByteBuffer = plane.buffer
+//    fun imageToBitmap(image: Image): Bitmap {
+//        val plane = image.planes[0]
+//        val buffer = plane.buffer
+//        val pixelStride = plane.pixelStride
+//        val rowStride = plane.rowStride
+//        val rowPadding = rowStride - pixelStride * image.width
+//
+//        val bitmap = createBitmap(image.width + rowPadding / pixelStride, image.height)
+//        bitmap.copyPixelsFromBuffer(buffer)
+//
+//        return Bitmap.createBitmap(bitmap, 0, 0, image.width, image.height)
+//    }
+
+    fun imageToBitmap(image: Image): Bitmap? = try {
+        val planes = image.planes
+        if (planes.isEmpty()) null
+
+        val plane = planes[0]
+        val buffer = plane.buffer ?: return null
+        val width = image.width
+        val height = image.height
+        if (width <= 0 || height <= 0 || !buffer.hasRemaining()) null
+
         val pixelStride = plane.pixelStride
         val rowStride = plane.rowStride
-        val rowPadding = rowStride - pixelStride * image.width
+        val rowPadding = rowStride - pixelStride * width
 
-        val bitmap = createBitmap(image.width + rowPadding / pixelStride, image.height)
-        bitmap.copyPixelsFromBuffer(buffer)
-        return Bitmap.createBitmap(bitmap, 0, 0, image.width, image.height)
+        // временный bitmap учитывает rowPadding
+        val tmp = createBitmap(width + rowPadding / pixelStride, height)
+        buffer.rewind()
+        tmp.copyPixelsFromBuffer(buffer)
+
+        // обрезаем до реальной ширины
+        val out = Bitmap.createBitmap(tmp, 0, 0, width, height)
+        tmp.recycle()
+        out
+    } catch (t: Throwable) {
+        null
     }
 
     fun Bitmap.toImageData(): ImageData {

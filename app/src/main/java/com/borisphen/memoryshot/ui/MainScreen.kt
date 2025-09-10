@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.borisphen.memoryshot.MainViewModel
 import com.borisphen.memoryshot.di.AppComponent
+import com.borisphen.memoryshot.util.ui.composeViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Suppress("FunctionNaming")
@@ -28,7 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun MainScreen(component: AppComponent, modifier: Modifier) {
 
     val viewModel: MainViewModel =
-        remember { component.viewModelFactory.create(component.serviceController) }
+        composeViewModel { component.viewModelFactory.create(component.serviceController) }
 
     val state by viewModel.uiState.collectAsState()
 
