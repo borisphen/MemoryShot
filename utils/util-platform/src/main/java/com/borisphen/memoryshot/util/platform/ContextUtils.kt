@@ -1,4 +1,4 @@
-package com.borisphen.memoryshot.util.ui
+package com.borisphen.memoryshot.util.platform
 
 import android.content.Context
 import android.graphics.Rect
@@ -12,6 +12,7 @@ fun Context.getScreenBounds(): Rect {
         wm.currentWindowMetrics.bounds
     } else {
         val metrics = DisplayMetrics()
+        @Suppress("DEPRECATION")
         wm.defaultDisplay.getMetrics(metrics)
         Rect(0, 0, metrics.widthPixels, metrics.heightPixels)
     }

@@ -1,7 +1,6 @@
 package com.borisphen.memoryshot
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.media.projection.MediaProjectionManager
 import android.os.Build
@@ -33,7 +32,6 @@ import androidx.navigation3.ui.NavDisplay
 import com.borisphen.core.ui.setEdgeToEdgeConfig
 import com.borisphen.core.ui.theme.MemoryShotTheme
 import com.borisphen.memoryshot.history.presentation.content.HistoryScreenEntry
-import com.borisphen.memoryshot.service.ForegroundMemoryShotService
 import com.borisphen.memoryshot.ui.MainScreen
 import com.borisphen.memoryshot.util.ui.activityViewModel
 import kotlinx.serialization.Serializable
@@ -45,6 +43,7 @@ private data object ScreenA : NavKey
 private data object ScreenB : NavKey
 
 @Serializable
+@Suppress("unused")
 private data object ScreenC : NavKey
 
 class MainActivity : ComponentActivity() {
@@ -71,7 +70,6 @@ class MainActivity : ComponentActivity() {
                 val resultCode = result.resultCode
                 val data = result.data!!
                 viewModel.storeProjectionData(resultCode = resultCode, intent = data)
-                ForegroundMemoryShotService.dataIntent = data
                 Toast.makeText(this, "Разрешение получено", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Screen capture denied", Toast.LENGTH_LONG).show()
@@ -87,7 +85,7 @@ class MainActivity : ComponentActivity() {
 //        val component: AiComponent = AiComponent.factory().create(dependencies)
 
         projectionManager =
-            getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
+            getSystemService(MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
         setContent {
 

@@ -1,17 +1,64 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# =====================
+# Gradle
+# =====================
+.gradle/
+**/build/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# =====================
+# Local config (secrets)
+# =====================
 local.properties
-## Directory-based project format:
+
+# =====================
+# Android Studio / IntelliJ IDEA
+# =====================
+*.iml
 .idea/
+*.idea/
+
+# =====================
+# Kotlin compiler
+# =====================
+.kotlin/
+
+# =====================
+# OS files
+# =====================
+.DS_Store
+Thumbs.db
+
+# =====================
+# Room database schemas
+# (commit only if you want migration history)
+# =====================
+# core/core-data/schemas/
+
+# =====================
+# Compiled output
+# =====================
+*.class
+*.dex
+*.ap_
+
+# =====================
+# App outputs
+# =====================
+/captures
+*.apk
+*.aab
+*.aar
+
+# =====================
+# Keystore (never commit!)
+# =====================
+*.jks
+*.keystore
+release.properties
+
+# =====================
+# Profiling / debugging
+# =====================
+*.hprof

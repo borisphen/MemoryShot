@@ -12,7 +12,7 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
 import com.borisphen.memoryshot.util.platform.BitmapUtils
-import com.borisphen.memoryshot.util.ui.getScreenBounds
+import com.borisphen.memoryshot.util.platform.getScreenBounds
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.withTimeoutOrNull
 import java.util.concurrent.atomic.AtomicBoolean
@@ -22,6 +22,10 @@ import kotlin.concurrent.withLock
 class ScreenCaptureManager(
     private val appContext: Context
 ) {
+
+    companion object {
+        private const val MAX_IMAGES = 3
+    }
     private var mediaProjection: MediaProjection? = null
     private var virtualDisplay: VirtualDisplay? = null
     private var imageReader: ImageReader? = null
@@ -42,6 +46,7 @@ class ScreenCaptureManager(
         onUndeliveredElement = { bmp -> try { bmp.recycle() } catch (_: Throwable) {} }
     )
 
+    @Suppress("TooGenericExceptionCaught")
     fun start(projection: MediaProjection) {
         // Идемпотентно: если уже запущено — сперва стоп
         stop()
@@ -60,7 +65,7 @@ class ScreenCaptureManager(
             width,
             height,
             PixelFormat.RGBA_8888,
-            /* maxImages */ 3
+            MAX_IMAGES
         ).also { reader ->
             reader.setOnImageAvailableListener({ r ->
                 // Быстрый предохранитель: если нас уже стопят — не трогаем image.

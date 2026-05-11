@@ -22,7 +22,9 @@ object NoteDataModule {
             context,
             MemoryNoteDatabase::class.java,
             "memory_note.db"
-        ).build()
+        )
+            .addMigrations(MemoryNoteDatabase.MIGRATION_1_2)
+            .build()
     }
 
     @Provides

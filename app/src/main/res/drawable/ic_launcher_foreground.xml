@@ -1,30 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ИКОНКА MEMORYSHOT — Вариант E "Тёмный / оранжевый"
+  Концепция: нейронная сеть (связи между узлами) + молния в центре.
+  Смысл: мгновенный захват голоса+экрана, обработка ИИ.
+
+  Цвета (доступны при цветовой слепоте — нет красного/зелёного):
+    Фон (ic_launcher_background):  #212121  тёмно-серый
+    Узлы и связи:                  #FF6D00  оранжевый
+    Молния:                        #FFFFFF  белый
+
+  Viewport: 108×108dp
+  Safe zone: 18–90dp (контент сосредоточен внутри)
+  Центр: 54,54
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path android:pathData="M31,63.928c0,0 6.4,-11 12.1,-13.1c7.2,-2.6 26,-1.4 26,-1.4l38.1,38.1L107,108.928l-32,-1L31,63.928z">
-        <aapt:attr name="android:fillColor">
-            <gradient
-                android:endX="85.84757"
-                android:endY="92.4963"
-                android:startX="42.9492"
-                android:startY="49.59793"
-                android:type="linear">
-                <item
-                    android:color="#44000000"
-                    android:offset="0.0" />
-                <item
-                    android:color="#00000000"
-                    android:offset="1.0" />
-            </gradient>
-        </aapt:attr>
-    </path>
+
+    <!-- Связи между узлами -->
+    <path
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="1.4"
+        android:strokeAlpha="0.7"
+        android:fillColor="#00000000"
+        android:pathData="M30,38 L54,54 M78,32 L54,54 M24,68 L54,54 M82,72 L54,54 M54,26 L54,54 M30,38 L54,26 M78,32 L54,26 M24,68 L82,72" />
+
+    <!-- Внешние узлы -->
+    <path
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="2"
+        android:fillColor="#212121"
+        android:pathData="M30,38 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0" />
+    <path
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="2"
+        android:fillColor="#212121"
+        android:pathData="M78,32 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0" />
+    <path
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="2"
+        android:fillColor="#212121"
+        android:pathData="M24,68 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0" />
+    <path
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="2"
+        android:fillColor="#212121"
+        android:pathData="M82,72 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0" />
+    <path
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="2"
+        android:fillColor="#212121"
+        android:pathData="M54,26 m-4,0 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0" />
+
+    <!-- Кольцо вокруг центра -->
+    <path
+        android:strokeColor="#FF6D00"
+        android:strokeWidth="1.5"
+        android:strokeAlpha="0.4"
+        android:fillColor="#00000000"
+        android:pathData="M54,40 a14,14 0 1,0 0.001,0" />
+
+    <!-- Молния (белая, в центре) -->
     <path
         android:fillColor="#FFFFFF"
-        android:fillType="nonZero"
-        android:pathData="M65.3,45.828l3.8,-6.6c0.2,-0.4 0.1,-0.9 -0.3,-1.1c-0.4,-0.2 -0.9,-0.1 -1.1,0.3l-3.9,6.7c-6.3,-2.8 -13.4,-2.8 -19.7,0l-3.9,-6.7c-0.2,-0.4 -0.7,-0.5 -1.1,-0.3C38.8,38.328 38.7,38.828 38.9,39.228l3.8,6.6C36.2,49.428 31.7,56.028 31,63.928h46C76.3,56.028 71.8,49.428 65.3,45.828zM43.4,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2c-0.3,-0.7 -0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C45.3,56.528 44.5,57.328 43.4,57.328L43.4,57.328zM64.6,57.328c-0.8,0 -1.5,-0.5 -1.8,-1.2s-0.1,-1.5 0.4,-2.1c0.5,-0.5 1.4,-0.7 2.1,-0.4c0.7,0.3 1.2,1 1.2,1.8C66.5,56.528 65.6,57.328 64.6,57.328L64.6,57.328z"
-        android:strokeWidth="1"
-        android:strokeColor="#00000000" />
+        android:pathData="M59,36 L47,56 L56,56 L49,76 L65,52 L56,52 Z" />
+
 </vector>

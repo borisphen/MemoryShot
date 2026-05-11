@@ -8,6 +8,7 @@ import com.borisphen.core.data.ocr.TessOcrEngineImpl
 import com.borisphen.core.data.screenshot.ScreenCaptureManager
 import com.borisphen.core.domain.ai.AiRepository
 import com.borisphen.core.domain.ocr.OcrEngine
+import com.squareup.moshi.Moshi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -18,14 +19,15 @@ import javax.inject.Singleton
 interface DataModule {
     @Binds
     @Singleton
+    @Suppress("unused")
     fun bindRepository(impl: AiRepositoryImpl): AiRepository
 
     companion object {
 
         @Provides
         @Singleton
-        fun provideRepository(service: GroqApiService): AiRepositoryImpl {
-            return AiRepositoryImpl(service)
+        fun provideRepository(service: GroqApiService, moshi: Moshi): AiRepositoryImpl {
+            return AiRepositoryImpl(service, moshi)
         }
 
         @Provides

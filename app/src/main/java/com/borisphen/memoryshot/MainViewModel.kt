@@ -3,10 +3,8 @@ package com.borisphen.memoryshot
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.borisphen.core.data.sharedpreferences.PreferenceStorageImpl.Companion.KEY_DATA_INTENT
-import com.borisphen.core.data.sharedpreferences.PreferenceStorageImpl.Companion.KEY_RESULT_CODE
 import com.borisphen.core.domain.service.ServiceController
-import com.borisphen.core.domain.sharedpreferences.PreferenceStorage
+import com.borisphen.memoryshot.di.MediaProjectionHolder
 import com.borisphen.memoryshot.ui.AppState
 import com.borisphen.memoryshot.ui.SideEffect
 import com.borisphen.memoryshot.ui.SideEffect.StartService
@@ -17,7 +15,6 @@ import com.borisphen.util.mutableSharedFlow
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -31,14 +28,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel @AssistedInject constructor(
-    @Assisted
-    private val serviceController: ServiceController,
-    private val preferenceStorage: PreferenceStorage
+    @Assisted private val serviceController: ServiceController,
+    private val projectionHolder: MediaProjectionHolder
 ) : ViewModel() {
 
     @AssistedFactory
     interface Factory {
-
         fun create(serviceController: ServiceController): MainViewModel
     }
 
@@ -58,10 +53,7 @@ class MainViewModel @AssistedInject constructor(
     }
 
     fun storeProjectionData(resultCode: Int, intent: Intent) {
-        viewModelScope.launch {
-            preferenceStorage.putValue(KEY_RESULT_CODE, resultCode.toString())
-            preferenceStorage.putValue(KEY_DATA_INTENT, intent.toUri(0).toString())
-        }
+        projectionHolder.store(resultCode, intent)
     }
 
     private fun observeEvents() {
@@ -78,13 +70,7 @@ class MainViewModel @AssistedInject constructor(
         when (event) {
             ButtonClick -> {
                 updateState { it.copy(serviceIsRunning = !currentlyRunning) }
-                sendSideEffect(
-                    if (currentlyRunning) {
-                        StopService
-                    } else {
-                        StartService
-                    }
-                )
+                sendSideEffect(if (currentlyRunning) StopService else StartService)
             }
         }
     }
@@ -100,14 +86,11 @@ class MainViewModel @AssistedInject constructor(
     }
 
     fun startService() {
-        viewModelScope.launch(Dispatchers.Main) {
-            val resultCode = preferenceStorage.getValue(KEY_RESULT_CODE).toInt()
-            val data = preferenceStorage.getValue(KEY_DATA_INTENT)
-            serviceController.startInterviewService(
-                resultCode = resultCode,
-                data = data
-            )
+        if (!projectionHolder.isAvailable()) {
+            updateState { it.copy(serviceIsRunning = false) }
+            return
         }
+        serviceController.startInterviewService()
     }
 
     fun stopService() {

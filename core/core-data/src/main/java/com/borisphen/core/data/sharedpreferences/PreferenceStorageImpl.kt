@@ -24,7 +24,7 @@ class PreferenceStorageImpl(
     }
 
     companion object {
-        const val KEY_RESULT_CODE = "resultCode"
-        const val KEY_DATA_INTENT = "dataIntent"
+        // KEY_DATA_INTENT удалён — Intent содержит Binder-токен, сериализовать нельзя.
+        // Данные хранятся в MediaProjectionHolder (in-memory Singleton).
     }
 }
